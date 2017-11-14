@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="BasicLinkinvestor">
+
+    <resultMap id="BasicLinkinvestorResult"
+        type="com.uk.sec.bns.client.model.BasicLinkinvestor">
+        <result property="pkId" column="pkId"/>
+        <result property="liCode" column="liCode"/>
+        <result property="liName" column="liName"/>
+        <result property="ivPrePkid" column="ivPrePkid"/>
+        <result property="ivCurrentflag" column="ivCurrentflag"/>
+        <result property="ivOperate" column="ivOperate"/>
+        <result property="ivOperator" column="ivOperator"/>
+        <result property="ivOperatetime" column="ivOperatetime"/>
+        <result property="ivReviewstatus" column="ivReviewstatus"/>
+        <result property="ivReviewstatustime" column="ivReviewstatustime"/>
+        <result property="ivReviewer1" column="ivReviewer1"/>
+        <result property="ivReview1time" column="ivReview1time"/>
+        <result property="ivReviewer2" column="ivReviewer2"/>
+        <result property="ivReview2time" column="ivReview2time"/>
+        <result property="remarks" column="remarks"/>
+        <result property="flag" column="flag"/>
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="basicLinkinvestorColumns">
+        <![CDATA[
+            basic_linkinvestor.pk_id as pkId,
+            basic_linkinvestor.li_Code as liCode,
+            basic_linkinvestor.li_name as liName,
+            basic_linkinvestor.iv_pre_pkid as ivPrePkid,
+            basic_linkinvestor.iv_currentflag as ivCurrentflag,
+            basic_linkinvestor.iv_operate as ivOperate,
+            basic_linkinvestor.iv_operator as ivOperator,
+            basic_linkinvestor.iv_operatetime as ivOperatetime,
+            basic_linkinvestor.iv_reviewstatus as ivReviewstatus,
+            basic_linkinvestor.iv_reviewstatustime as ivReviewstatustime,
+            basic_linkinvestor.iv_reviewer1 as ivReviewer1,
+            basic_linkinvestor.iv_review1time as ivReview1time,
+            basic_linkinvestor.iv_reviewer2 as ivReviewer2,
+            basic_linkinvestor.iv_review2time as ivReview2time,
+            basic_linkinvestor.remarks as remarks,
+            basic_linkinvestor.flag as flag
+        ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert"
+        parameterType="com.uk.sec.bns.client.model.BasicLinkinvestor">
+        <selectKey resultType="java.lang.String" order="BEFORE"
+            keyProperty="pkId">
+            SELECT sys_guid() AS ID FROM DUAL
+        </selectKey>
+        <![CDATA[
+        INSERT INTO
+        basic_linkinvestor (
+            pk_id ,
+            li_Code ,
+            li_name ,
+            iv_pre_pkid ,
+            iv_currentflag ,
+            iv_operate ,
+            iv_operator ,
+            iv_operatetime ,
+            iv_reviewstatus ,
+            iv_reviewstatustime ,
+            iv_reviewer1 ,
+            iv_review1time ,
+            iv_reviewer2 ,
+            iv_review2time ,
+            remarks,
+            flag
+        ) VALUES (
+            #{pkId,jdbcType=VARCHAR} ,
+            #{liCode,jdbcType=VARCHAR} ,
+            #{liName,jdbcType=VARCHAR} ,
+            #{ivPrePkid,jdbcType=INTEGER} ,
+            #{ivCurrentflag,jdbcType=INTEGER} ,
+            #{ivOperate,jdbcType=INTEGER} ,
+            #{ivOperator,jdbcType=INTEGER} ,
+            #{ivOperatetime,jdbcType=DATE} ,
+            #{ivReviewstatus,jdbcType=INTEGER} ,
+            #{ivReviewstatustime,jdbcType=DATE} ,
+            #{ivReviewer1,jdbcType=VARCHAR} ,
+            #{ivReview1time,jdbcType=DATE} ,
+            #{ivReviewer2,jdbcType=VARCHAR} ,
+            #{ivReview2time,jdbcType=DATE} ,
+            #{remarks,jdbcType=VARCHAR},
+            #{flag,jdbcType=INTEGER}
+        )
+    ]]>
+        <!--
+            oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL
+            DB2: order="BEFORE"" values nextval for sequenceName
+            <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+            SELECT sequenceName.nextval AS ID FROM DUAL
+            </selectKey>
+        -->
+    </insert>
+
+    <update id="update"
+        parameterType="com.uk.sec.bns.client.model.BasicLinkinvestor">
+        <![CDATA[
+        UPDATE basic_linkinvestor SET
+            li_Code = #{liCode,jdbcType=VARCHAR} ,
+            li_name = #{liName,jdbcType=VARCHAR} ,
+            iv_pre_pkid = #{ivPrePkid,jdbcType=INTEGER} ,
+            iv_currentflag = #{ivCurrentflag,jdbcType=INTEGER} ,
+            iv_operate = #{ivOperate,jdbcType=INTEGER} ,
+            iv_operator = #{ivOperator,jdbcType=INTEGER} ,
+            iv_operatetime = #{ivOperatetime,jdbcType=DATE} ,
+            iv_reviewstatus = #{ivReviewstatus,jdbcType=INTEGER} ,
+            iv_reviewstatustime = #{ivReviewstatustime,jdbcType=DATE} ,
+            iv_reviewer1 = #{ivReviewer1,jdbcType=VARCHAR} ,
+            iv_review1time = #{ivReview1time,jdbcType=DATE} ,
+            iv_reviewer2 = #{ivReviewer2,jdbcType=VARCHAR} ,
+            iv_review2time = #{ivReview2time,jdbcType=DATE} ,
+            remarks = #{remarks,jdbcType=VARCHAR},
+            flag = #{flag,jdbcType=INTEGER} 
+        WHERE
+            pk_id = #{pkId} 
+    ]]>
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        <![CDATA[
+        delete from basic_linkinvestor where
+        pk_id = #{id} 
+    ]]>
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Integer"
+        resultMap="BasicLinkinvestorResult">
+        select
+        <include refid="basicLinkinvestorColumns" />
+        <![CDATA[
+            from basic_linkinvestor
+            where
+                pk_id = #{id} 
+        ]]>
+    </select>
+
+    <sql id="basicLinkinvestorDynamicWhere">
+        <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+        <where>
+            <if
+                test="@Ognl@isNotBlank(pkId)">
+                and basic_linkinvestor.pk_id = #{pkId}            </if>
+            <if
+                test="@Ognl@isNotBlank(liCode)">
+                and basic_linkinvestor.li_Code = #{liCode}            </if>
+            <if
+                test="@Ognl@isNotBlank(liName)">
+                and basic_linkinvestor.li_name = #{liName}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivPrePkid)">
+                and basic_linkinvestor.iv_pre_pkid = #{ivPrePkid}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivCurrentflag)">
+                and basic_linkinvestor.iv_currentflag = #{ivCurrentflag}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivOperate)">
+                and basic_linkinvestor.iv_operate = #{ivOperate}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivOperator)">
+                and basic_linkinvestor.iv_operator = #{ivOperator}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivOperatetime)">
+                and basic_linkinvestor.iv_operatetime = #{ivOperatetime}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivReviewstatus)">
+                and basic_linkinvestor.iv_reviewstatus = #{ivReviewstatus}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivReviewstatustime)">
+                and basic_linkinvestor.iv_reviewstatustime = #{ivReviewstatustime}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivReviewer1)">
+                and basic_linkinvestor.iv_reviewer1 = #{ivReviewer1}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivReview1time)">
+                and basic_linkinvestor.iv_review1time = #{ivReview1time}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivReviewer2)">
+                and basic_linkinvestor.iv_reviewer2 = #{ivReviewer2}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivReview2time)">
+                and basic_linkinvestor.iv_review2time = #{ivReview2time}            </if>
+            <if
+                test="@Ognl@isNotBlank(remarks)">
+                and basic_linkinvestor.remarks = #{remarks}            </if>
+            <if
+                test="@Ognl@isNotBlank(flag)">
+                and basic_linkinvestor.flag = #{flag}            </if>
+        </where>
+    </sql>
+
+    <select id="count" resultType="long">
+        select count(*) from basic_linkinvestor
+        <include refid="basicLinkinvestorDynamicWhere" />
+    </select>
+
+    <!--
+        分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+        因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect" resultMap="BasicLinkinvestorResult">
+        select
+        <include refid="basicLinkinvestorColumns" />
+        from basic_linkinvestor
+        <include refid="basicLinkinvestorDynamicWhere" />
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+                                  
+
+    <select id="findAll"
+        parameterType="com.uk.sec.bns.client.model.BasicLinkinvestor"
+        resultMap="BasicLinkinvestorResult">
+        select
+        <include refid="basicLinkinvestorColumns" />
+        from basic_linkinvestor
+        <include refid="basicLinkinvestorDynamicWhere" />
+    </select>
+
+</mapper>

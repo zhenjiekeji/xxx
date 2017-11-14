@@ -1,0 +1,31 @@
+#ExtremeTable
+
+table.filterable=false
+table.imagePath=/widgets/extremecomponents/images/*.gif
+table.locale=zh_CN
+
+#table.view.html=org.extremecomponents.table.view.CompactView
+table.view.html=org.extremecomponents.table.view.UserCompactView
+export.view.xls=com.uk.sec.framework.extremeImpl.SecXlsView
+
+#table.view.html=com.uk.sec.framework.extremeImpl.ColSortHtmlView
+#export.view.pdf=com.uk.sec.framework.extremeImpl.ColSortPdfView
+#export.view.xls=com.uk.sec.framework.extremeImpl.ColSortXlsView
+#export.view.csv=com.uk.sec.framework.extremeImpl.ColSortCsvView
+#table.interceptor.viewsDeniedInterceptor=com.uk.sec.framework.extremeImpl.ViewsDeniedTableInterceptor
+
+table.pageDisplayed=15
+#option value(top,bottom,both)
+table.toolbarShow=bottom
+
+row.highlightRow=true
+table.rowsDisplayed=10
+
+table.maxRowsDisplayed=50
+table.medianRowsDisplayed=30
+
+column.format.date=yyyy-MM-dd HH:mm:ss
+column.format.currency=###,###,###,###,##0.00
+
+exportPdf.userconfigLocation=/userconfig.xml
+exportPdf.font=mysimkai

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="BasicTollplaza">
+
+    <resultMap id="BasicTollplazaResult"
+        type="com.uk.sec.bns.client.model.BasicTollplaza">
+        <result property="pkId" column="pkId"/>
+        <result property="oldCode" column="oldCode"/>
+        <result property="tpId" column="tpId"/>
+        <result property="tpTollstationPkid" column="tpTollstationPkid"/>
+        <result property="tpTollstationid" column="tpTollstationid"/>
+        <result property="tpType" column="tpType"/>
+        <result property="tpNum" column="tpNum"/>
+        <result property="tpReservednum" column="tpReservednum"/>
+        <result property="tpName" column="tpName"/>
+        <result property="tpPlazatype" column="tpPlazatype"/>
+        <result property="tpLng" column="tpLng"/>
+        <result property="tpLat" column="tpLat"/>
+        <result property="tpStakenum" column="tpStakenum"/>
+        <result property="tpEtclanecount" column="tpEtclanecount"/>
+        <result property="tpMtclanecount" column="tpMtclanecount"/>
+        <result property="tpMixlanecount" column="tpMixlanecount"/>
+        <result property="remarks" column="remarks"/>
+        <result property="menuId" column="menuId"/>
+        <result property="flag" column="flag"/>
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="basicTollplazaColumns">
+        <![CDATA[
+            basic_tollplaza.pk_id as pkId,
+            basic_tollplaza.old_code as oldCode,
+            basic_tollplaza.tp_id as tpId,
+            basic_tollplaza.tp_tollstation_pkid as tpTollstationPkid,
+            basic_tollplaza.tp_tollstationid as tpTollstationid,
+            basic_tollplaza.tp_type as tpType,
+            basic_tollplaza.tp_num as tpNum,
+            basic_tollplaza.tp_reservednum as tpReservednum,
+            basic_tollplaza.tp_name as tpName,
+            basic_tollplaza.tp_plazatype as tpPlazatype,
+            basic_tollplaza.tp_lng as tpLng,
+            basic_tollplaza.tp_lat as tpLat,
+            basic_tollplaza.tp_stakenum as tpStakenum,
+            basic_tollplaza.tp_etclanecount as tpEtclanecount,
+            basic_tollplaza.tp_mtclanecount as tpMtclanecount,
+            basic_tollplaza.tp_mixlanecount as tpMixlanecount,
+            basic_tollplaza.remarks as remarks,
+            basic_tollplaza.flag as flag,
+            basic_tollplaza.menu_id as menuId
+        ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert"
+        parameterType="com.uk.sec.bns.client.model.BasicTollplaza">
+        <selectKey resultType="java.lang.String" order="BEFORE"
+            keyProperty="pkId">
+            SELECT sys_guid() AS ID FROM DUAL
+        </selectKey>
+        <![CDATA[
+        INSERT INTO
+        basic_tollplaza (
+            pk_id ,
+            old_code ,
+            tp_id ,
+            tp_tollstation_pkid ,
+            tp_tollstationid ,
+            tp_type ,
+            tp_num ,
+            tp_reservednum ,
+            tp_name ,
+            tp_plazatype ,
+            tp_lng ,
+            tp_lat ,
+            tp_stakenum ,
+            tp_etclanecount ,
+            tp_mtclanecount ,
+            tp_mixlanecount,
+            remarks,
+            flag,
+            menu_id 
+        ) VALUES (
+            #{pkId,jdbcType=VARCHAR} ,
+            #{oldCode,jdbcType=VARCHAR} ,
+            #{tpId,jdbcType=VARCHAR} ,
+            #{tpTollstationPkid,jdbcType=VARCHAR} ,
+            #{tpTollstationid,jdbcType=VARCHAR} ,
+            #{tpType,jdbcType=VARCHAR} ,
+            #{tpNum,jdbcType=VARCHAR} ,
+            #{tpReservednum,jdbcType=VARCHAR} ,
+            #{tpName,jdbcType=VARCHAR} ,
+            #{tpPlazatype,jdbcType=INTEGER} ,
+            #{tpLng,jdbcType=VARCHAR} ,
+            #{tpLat,jdbcType=VARCHAR} ,
+            #{tpStakenum,jdbcType=VARCHAR} ,
+            #{tpEtclanecount,jdbcType=INTEGER} ,
+            #{tpMtclanecount,jdbcType=INTEGER} ,
+            #{tpMixlanecount,jdbcType=INTEGER} ,
+            #{remarks,jdbcType=VARCHAR},
+            #{flag, jdbcType=DECIMAL},
+            #{menuId,jdbcType=VARCHAR} 
+        )
+    ]]>
+        <!--
+            oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL
+            DB2: order="BEFORE"" values nextval for sequenceName
+            <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+            SELECT sequenceName.nextval AS ID FROM DUAL
+            </selectKey>
+        -->
+    </insert>
+
+    <update id="update"
+        parameterType="com.uk.sec.bns.client.model.BasicTollplaza">
+        <![CDATA[
+        UPDATE basic_tollplaza SET
+            old_code = #{oldCode,jdbcType=VARCHAR} ,
+            tp_id = #{tpId,jdbcType=VARCHAR} ,
+            tp_tollstation_pkid = #{tpTollstationPkid,jdbcType=VARCHAR} ,
+            tp_tollstationid = #{tpTollstationid,jdbcType=VARCHAR} ,
+            tp_type = #{tpType,jdbcType=VARCHAR} ,
+            tp_num = #{tpNum,jdbcType=VARCHAR} ,
+            tp_reservednum = #{tpReservednum,jdbcType=VARCHAR} ,
+            tp_name = #{tpName,jdbcType=VARCHAR} ,
+            tp_plazatype = #{tpPlazatype,jdbcType=INTEGER} ,
+            tp_lng = #{tpLng,jdbcType=VARCHAR} ,
+            tp_lat = #{tpLat,jdbcType=VARCHAR} ,
+            tp_stakenum = #{tpStakenum,jdbcType=VARCHAR} ,
+            tp_etclanecount = #{tpEtclanecount,jdbcType=INTEGER} ,
+            tp_mtclanecount = #{tpMtclanecount,jdbcType=INTEGER} ,
+            tp_mixlanecount = #{tpMixlanecount,jdbcType=INTEGER} ,
+            remarks = #{remarks,jdbcType=VARCHAR},
+            flag =  #{flag, jdbcType=DECIMAL},
+            menu_id = #{menuId,jdbcType=VARCHAR} 
+        WHERE
+            pk_id = #{pkId} 
+    ]]>
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        <![CDATA[
+        delete from basic_tollplaza where
+        pk_id = #{pkId} 
+    ]]>
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Integer"
+        resultMap="BasicTollplazaResult">
+        select
+        <include refid="basicTollplazaColumns" />
+        <![CDATA[
+            from basic_tollplaza
+            where
+                pk_id = #{pkId} 
+        ]]>
+    </select>
+
+    <sql id="basicTollplazaDynamicWhere">
+        <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+        <where>
+            <if
+                test="@Ognl@isNotBlank(pkId)">
+                and basic_tollplaza.pk_id = #{pkId}            </if>
+            <if
+                test="@Ognl@isNotBlank(oldCode)">
+                and basic_tollplaza.old_code = #{oldCode}            </if>
+            <if
+                test="@Ognl@isNotBlank(tpId)">
+                and basic_tollplaza.tp_id = #{tpId}            </if>
+            <if
+                test="@Ognl@isNotBlank(tpTollstationPkid)">
+                and basic_tollplaza.tp_tollstation_pkid = #{tpTollstationPkid}            </if>
+            <if
+                test="@Ognl@isNotBlank(tpTollstationid)">
+                and basic_tollplaza.tp_tollstationid = #{tpTollstationid}            </if>
+            <if
+                test="@Ognl@isNotBlank(tpType)">
+                and basic_tollplaza.tp_type = #{tpType}            </if>
+            <if
+                test="@Ognl@isNotBlank(tpNum)">
+                and basic_tollplaza.tp_num = #{tpNum}            </if>
+            <if
+                test="@Ognl@isNotBlank(tpReservednum)">
+                and basic_tollplaza.tp_reservednum = #{tpReservednum}            </if>
+            <if
+                test="@Ognl@isNotBlank(tpName)">
+                and basic_tollplaza.tp_name = #{tpName}            </if>
+            <if
+                test="@Ognl@isNotBlank(tpPlazatype)">
+                and basic_tollplaza.tp_plazatype = #{tpPlazatype}            </if>
+            <if
+                test="@Ognl@isNotBlank(tpLng)">
+                and basic_tollplaza.tp_lng = #{tpLng}            </if>
+            <if
+                test="@Ognl@isNotBlank(tpLat)">
+                and basic_tollplaza.tp_lat = #{tpLat}            </if>
+            <if
+                test="@Ognl@isNotBlank(tpStakenum)">
+                and basic_tollplaza.tp_stakenum = #{tpStakenum}            </if>
+            <if
+                test="@Ognl@isNotBlank(tpEtclanecount)">
+                and basic_tollplaza.tp_etclanecount = #{tpEtclanecount}            </if>
+            <if
+                test="@Ognl@isNotBlank(tpMtclanecount)">
+                and basic_tollplaza.tp_mtclanecount = #{tpMtclanecount}            </if>
+            <if
+                test="@Ognl@isNotBlank(tpMixlanecount)">
+                and basic_tollplaza.tp_mixlanecount = #{tpMixlanecount}            </if>
+            <if
+                test="@Ognl@isNotBlank(remarks)">
+                and basic_tollplaza.remarks  = #{remarks}            </if>
+        	<if
+                test="@Ognl@isNotBlank(menuId)">
+                and basic_tollplaza.menu_id = #{menuId}            </if>
+            <if
+                test="@Ognl@isNotBlank(flag)">
+                and basic_tollplaza.flag = #{flag}            </if>
+        </where>
+    </sql>
+
+    <select id="count" resultType="long">
+        select count(*) from basic_tollplaza
+        <include refid="basicTollplazaDynamicWhere" />
+    </select>
+
+    <!--
+        分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+        因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect" resultMap="BasicTollplazaResult">
+        select
+        <include refid="basicTollplazaColumns" />
+        from basic_tollplaza
+        <include refid="basicTollplazaDynamicWhere" />
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+                                    
+
+    <select id="findAll"
+        parameterType="com.uk.sec.bns.client.model.BasicTollplaza"
+        resultMap="BasicTollplazaResult">
+        select
+        <include refid="basicTollplazaColumns" />
+        from basic_tollplaza
+        <include refid="basicTollplazaDynamicWhere" />
+    </select>
+
+</mapper>

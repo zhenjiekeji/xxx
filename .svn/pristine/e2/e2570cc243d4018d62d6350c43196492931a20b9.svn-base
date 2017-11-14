@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="SecPrivilegeMenu">
+
+    <resultMap id="SecPrivilegeMenuResult"
+        type="com.uk.sec.privilege.framework.privilege.model.SecPrivilegeMenu">
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="secPrivilegeMenuColumns">
+        <![CDATA[
+            SEC_PRIVILEGE_MENU.MENU_ID as menuId,
+            SEC_PRIVILEGE_MENU.MENU_TITLE as menuTitle,
+            SEC_PRIVILEGE_MENU.MENU_DESCRIPTION as menuDescription,
+            SEC_PRIVILEGE_MENU.MENU_URL as menuUrl,
+            SEC_PRIVILEGE_MENU.MENU_VIEWORDER as menuVieworder,
+            SEC_PRIVILEGE_MENU.PARENT_ID as parentId,
+            SEC_PRIVILEGE_MENU.MENU_FLAG as menuFlag,
+            SEC_PRIVILEGE_MENU.MENU_ISLEAF as menuIsleaf
+        ]]>
+    </sql>
+
+    <sql id="secPrivilegeMenuColumnsRelate">
+        <![CDATA[
+            distinct m.MENU_ID as menuId,
+            m.MENU_TITLE as menuTitle,
+            m.MENU_DESCRIPTION as menuDescription,
+            m.MENU_URL as menuUrl,
+            m.MENU_VIEWORDER as menuVieworder,
+            m.PARENT_ID as parentId,
+            m.MENU_FLAG as menuFlag,
+            m.MENU_ISLEAF as menuIsleaf
+        ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecPrivilegeMenu">
+        <selectKey resultType="java.lang.String" order="BEFORE"
+            keyProperty="menuId">
+            SELECT sys_guid() AS MENU_ID FROM DUAL
+        </selectKey>
+        <![CDATA[
+        INSERT INTO
+        SEC_PRIVILEGE_MENU (
+            MENU_ID ,
+            MENU_TITLE ,
+            MENU_DESCRIPTION ,
+            MENU_URL ,
+            MENU_VIEWORDER ,
+            PARENT_ID ,
+            MENU_FLAG ,
+            MENU_ISLEAF
+        ) VALUES (
+            #{menuId,jdbcType=VARCHAR} ,
+            #{menuTitle,jdbcType=VARCHAR} ,
+            #{menuDescription,jdbcType=VARCHAR} ,
+            #{menuUrl,jdbcType=VARCHAR} ,
+            #{menuVieworder,jdbcType=VARCHAR} ,
+            #{parentId,jdbcType=VARCHAR} ,
+            #{menuFlag,jdbcType=DECIMAL} ,
+            #{menuIsleaf,jdbcType=DECIMAL}
+        )
+    ]]>
+        <!--
+            oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL
+            DB2: order="BEFORE"" values nextval for sequenceName
+            <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+            SELECT sequenceName.nextval AS ID FROM DUAL
+            </selectKey>
+        -->
+    </insert>
+
+    <update id="update"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecPrivilegeMenu">
+        <![CDATA[
+        UPDATE SEC_PRIVILEGE_MENU SET
+            MENU_TITLE = #{menuTitle,jdbcType=VARCHAR} ,
+            MENU_DESCRIPTION = #{menuDescription,jdbcType=VARCHAR} ,
+            MENU_URL = #{menuUrl,jdbcType=VARCHAR} ,
+            MENU_VIEWORDER = #{menuVieworder,jdbcType=VARCHAR} ,
+            PARENT_ID = #{parentId,jdbcType=VARCHAR} ,
+            MENU_FLAG = #{menuFlag,jdbcType=DECIMAL} ,
+            MENU_ISLEAF = #{menuIsleaf,jdbcType=DECIMAL}
+        WHERE
+            MENU_ID = #{menuId}
+    ]]>
+    </update>
+
+    <update id="updatePidAndVieworder"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecPrivilegeMenu">
+        <![CDATA[
+        UPDATE SEC_PRIVILEGE_MENU SET
+            PARENT_ID = #{parentId,jdbcType=VARCHAR} ,
+            MENU_VIEWORDER = #{menuVieworder,jdbcType=VARCHAR}
+        WHERE
+            MENU_ID = #{menuId}
+    ]]>
+    </update>
+
+    <update id="updateVieworderBySameLevel"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecPrivilegeMenu">
+        UPDATE SEC_PRIVILEGE_MENU SET
+        	MENU_VIEWORDER = LPAD(cast(MENU_VIEWORDER as integer)-1,LENGTH(MENU_VIEWORDER),'0')
+        WHERE
+        <if test="@Ognl@isNotBlank(parentId)">
+			PARENT_ID = #{parentId}
+        </if>
+        <if test="@Ognl@isBlank(parentId)">
+			PARENT_ID is null
+        </if>
+        <![CDATA[
+        	and MENU_VIEWORDER > #{menuVieworder}
+        ]]>
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        <![CDATA[
+        delete from SEC_PRIVILEGE_MENU where
+        MENU_ID = #{id}
+    ]]>
+    </delete>
+
+    <select id="getById" parameterType="java.lang.String"
+        resultMap="SecPrivilegeMenuResult">
+        select
+        <include refid="secPrivilegeMenuColumns" />
+        <![CDATA[
+            from SEC_PRIVILEGE_MENU
+            where
+                MENU_ID = #{id}
+        ]]>
+    </select>
+
+    <sql id="secPrivilegeMenuDynamicWhere">
+        <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+        <where>
+            <if
+                test="@Ognl@isNotBlank(menuId)">
+                and SEC_PRIVILEGE_MENU.MENU_ID = #{menuId}            </if>
+            <if
+                test="@Ognl@isNotBlank(menuTitle)">
+                and SEC_PRIVILEGE_MENU.MENU_TITLE = #{menuTitle}            </if>
+            <if
+                test="@Ognl@isNotBlank(menuDescription)">
+                and SEC_PRIVILEGE_MENU.MENU_DESCRIPTION = #{menuDescription}            </if>
+            <if
+                test="@Ognl@isNotBlank(menuUrl)">
+                and SEC_PRIVILEGE_MENU.MENU_URL = #{menuUrl}            </if>
+            <if
+                test="@Ognl@isNotBlank(menuVieworder)">
+                and SEC_PRIVILEGE_MENU.MENU_VIEWORDER = #{menuVieworder}            </if>
+            <if
+                test="@Ognl@isNotBlank(parentId)">
+                and SEC_PRIVILEGE_MENU.PARENT_ID = #{parentId}            </if>
+            <if
+                test="@Ognl@isNotBlank(menuFlag)">
+                and SEC_PRIVILEGE_MENU.MENU_FLAG = #{menuFlag}            </if>
+            <if
+                test="@Ognl@isNotBlank(menuIsleaf)">
+                and SEC_PRIVILEGE_MENU.MENU_ISLEAF = #{menuIsleaf}            </if>
+        </where>
+    </sql>
+
+    <select id="count" resultType="long">
+        select count(*) from SEC_PRIVILEGE_MENU
+        <include refid="secPrivilegeMenuDynamicWhere" />
+    </select>
+
+    <!--
+        分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+        因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect" resultMap="SecPrivilegeMenuResult">
+        select
+        <include refid="secPrivilegeMenuColumns" />
+        from SEC_PRIVILEGE_MENU
+        <include refid="secPrivilegeMenuDynamicWhere" />
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+    <select id="findAll"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecPrivilegeMenu"
+        resultMap="SecPrivilegeMenuResult">
+        select
+        <include refid="secPrivilegeMenuColumns" />
+        from SEC_PRIVILEGE_MENU
+        <include refid="secPrivilegeMenuDynamicWhere" />
+         order by MENU_VIEWORDER
+    </select>
+
+    <select id="findAllByMap"
+        resultMap="SecPrivilegeMenuResult">
+        select
+        <include refid="secPrivilegeMenuColumns" />
+        from SEC_PRIVILEGE_MENU
+        <include refid="secPrivilegeMenuDynamicWhere" />
+         order by MENU_VIEWORDER
+    </select>
+
+	<!-- 根据登陆ID查询该用户角色内所有的菜单 -->
+    <select id="findAllMenuByLoginId" parameterType="java.lang.String" resultMap="SecPrivilegeMenuResult">
+        select
+        <include refid="secPrivilegeMenuColumnsRelate"/>
+        from SEC_PRIVILEGE_MENU m,SEC_PRIVILEGE_ROLE_MENU_OPER rmo,SEC_PRIVILEGE_USER_ROLE ur
+        where rmo.MENU_ID=m.MENU_ID and rmo.ROLE_ID=ur.ROLE_ID and ur.LOGIN_ID=#{loginId}
+        order by m.MENU_VIEWORDER
+    </select>
+
+    <!-- 根据登陆ID和一级菜单ID查询该用户角色内的二级菜单 -->
+    <select id="findMenuByLoginIdAndParentId" parameterType="java.util.Map" resultMap="SecPrivilegeMenuResult">
+        select
+        <include refid="secPrivilegeMenuColumnsRelate"/>
+        from SEC_PRIVILEGE_MENU m,SEC_PRIVILEGE_ROLE_MENU_OPER rmo,SEC_PRIVILEGE_USER_ROLE ur
+        where rmo.MENU_ID=m.MENU_ID and rmo.ROLE_ID=ur.ROLE_ID and ur.LOGIN_ID=#{loginId} and m.PARENT_ID=#{parentId}
+        order by m.MENU_VIEWORDER
+    </select>
+
+	<!-- 根据用户登陆ID和菜单url来查询其所在权限内所有菜单 -->
+    <select id="selectMenuByLoginIdAndUrl" parameterType="java.util.Map" resultMap="SecPrivilegeMenuResult">
+        select
+        <include refid="secPrivilegeMenuColumnsRelate"/>
+        from SEC_PRIVILEGE_MENU m,SEC_PRIVILEGE_ROLE_MENU_OPER rmo,SEC_PRIVILEGE_USER_ROLE ur
+        where rmo.MENU_ID=m.MENU_ID and
+        rmo.ROLE_ID=ur.ROLE_ID and
+        ur.LOGIN_ID=#{loginId}
+        <if test="@Ognl@isNotBlank(menuUrl)">
+        	and m.MENU_URL = #{menuUrl}
+		</if>
+        order by m.MENU_VIEWORDER
+    </select>
+
+	<!-- 根据菜单的显示顺序查询菜单表中的所有可见的菜单列表 -->
+    <select id="selectAllMenuListOrder" resultMap="SecPrivilegeMenuResult">
+        select
+        <include refid="secPrivilegeMenuColumns" />
+        from SEC_PRIVILEGE_MENU
+        where MENU_FLAG=1
+        order by MENU_VIEWORDER
+    </select>
+
+	<!-- 返回当前选中菜单下级菜单的最大vieworder -->
+    <select id="selectMenuVieworderMax" parameterType="com.uk.sec.privilege.framework.privilege.model.SecPrivilegeMenu"
+    	resultType="java.lang.String">
+        select max(MENU_VIEWORDER)
+        from SEC_PRIVILEGE_MENU
+        where
+        <if test="@Ognl@isNotBlank(menuId)">
+			PARENT_ID = #{menuId}
+        </if>
+        <if test="@Ognl@isBlank(menuId)">
+			PARENT_ID is null
+        </if>
+    </select>
+
+</mapper>

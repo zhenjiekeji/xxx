@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!--
+    修改说明:
+    1.修改pakcage的namespace属性,因为URL访问规则是: /namesapce/Entity/method.do
+    2.根据你的包结构修改action节点的class属性
+-->
+
+<struts>
+
+    <constant name="struts.devMode" value="false" />
+    <!-- struts的URL扩展名 -->
+    <constant name="struts.action.extension" value="do" />
+
+    <!-- 允许访问静态成员变量 -->
+    <constant name="struts.ognl.allowStaticMethodAccess" value="true" />
+
+    <constant name="struts.custom.i18n.resources" value="i18n/messages" />
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.enable.SlashesInActionNames" value="true" />
+    <!-- 修改最大传输大小为1G -->
+    <constant name="struts.multipart.maxSize" value="1073741824" />
+    <!-- 模板 -->
+    <constant name="struts.ui.theme" value="simple" />
+
+    <package name="custom-default" extends="struts-default">
+        <result-types>
+            <result-type name="direct" class="cn.org.rapid_framework.struts2.dispatcher.DirectResult" />
+        </result-types>
+        <interceptors>
+        	<interceptor name="loginIntercepter" class="com.uk.sec.privilege.framework.intercepter.CheckLoginInterceptor"></interceptor>
+        	<interceptor name="roleMenuOperInterceptor" class="com.uk.sec.privilege.framework.intercepter.QueryRoleMenuOperationInterceptor"></interceptor>
+            <interceptor name="trim" class="com.uk.sec.framework.interceptor.TrimInterceptor" />
+            <interceptor-stack name="mystack">
+                <interceptor-ref name="trim"></interceptor-ref>
+                <interceptor-ref name="paramsPrepareParamsStack">
+                    <param name="exception.logCategory">sec.exception</param>
+                    <param name="exception.logLevel">info</param>
+                    <param name="exception.logEnabled">true</param>
+                </interceptor-ref>
+                <interceptor-ref name="timer"></interceptor-ref>
+               	<!--配置自定义的登陆权限检查拦截器-->
+        		<interceptor-ref name="loginIntercepter" />
+               	<!--配置查询角色、菜单、操作拦截器
+        		<interceptor-ref name="roleMenuOperInterceptor" />
+        		-->
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="mystack" />
+        <global-results>
+            <result name="bussiness_error">/commons/business_error.jsp</result>
+            <result name="error">/commons/error.jsp</result>
+        </global-results>
+        <global-exception-mappings>
+            <exception-mapping exception="com.uk.sec.framework.exception.SecRuntimeException" result="bussiness_error" />
+            <exception-mapping exception="java.lang.Exception" result="error" />
+        </global-exception-mappings>
+    </package>
+
+    <!--加载各个业务模块的访问文件-->
+    <include file="struts-bns.xml" />
+    <include file="struts-framework.xml" />
+    <include file="struts-support.xml" />
+</struts>

@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="BasicTolllane">
+
+    <resultMap id="BasicTolllaneResult"
+        type="com.uk.sec.bns.client.model.BasicTolllane">
+        <result property="pkId" column="pkId"/>
+        <result property="oldStationid" column="oldStationid"/>
+        <result property="oldLanecode" column="oldLanecode"/>
+        <result property="tlId" column="tlId"/>
+        <result property="tlTollplazaPkid" column="tlTollplazaPkid"/>
+        <result property="tlTollplazaid" column="tlTollplazaid"/>
+        <result property="tlNum" column="tlNum"/>
+        <result property="tlReservednum" column="tlReservednum"/>
+        <result property="tlType" column="tlType"/>
+        <result property="tlGreentraffic" column="tlGreentraffic"/>
+        <result property="tlTidaltime" column="tlTidaltime"/>
+        <result property="tlStarttime" column="tlStarttime"/>
+        <result property="tlEndtime" column="tlEndtime"/>
+        <result property="tlStatus" column="tlStatus"/>
+        <result property="tlWeightcharge" column="tlWeightcharge"/>
+        <result property="remarks" column="remarks"/>
+        <result property="menuId" column="menuId"/>
+        <result property="flag" column="flag"/>
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="basicTolllaneColumns">
+        <![CDATA[
+            basic_tolllane.pk_id as pkId,
+            basic_tolllane.old_stationid as oldStationid,
+            basic_tolllane.old_lanecode as oldLanecode,
+            basic_tolllane.tl_id as tlId,
+            basic_tolllane.tl_tollplaza_pkid as tlTollplazaPkid,
+            basic_tolllane.tl_tollplazaid as tlTollplazaid,
+            basic_tolllane.tl_num as tlNum,
+            basic_tolllane.tl_reservednum as tlReservednum,
+            basic_tolllane.tl_type as tlType,
+            basic_tolllane.tl_greentraffic as tlGreentraffic,
+            basic_tolllane.tl_tidaltime as tlTidaltime,
+            basic_tolllane.tl_starttime as tlStarttime,
+            basic_tolllane.tl_endtime as tlEndtime,
+            basic_tolllane.tl_status as tlStatus,
+            basic_tolllane.tl_weightcharge as tlWeightcharge,
+            basic_tolllane.remarks as remarks,
+            basic_tolllane.flag as flag,
+            basic_tolllane.menu_id as menuId
+        ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert"
+        parameterType="com.uk.sec.bns.client.model.BasicTolllane">
+        <selectKey resultType="java.lang.String" order="BEFORE"
+            keyProperty="pkId">
+            SELECT sys_guid() AS ID FROM DUAL
+        </selectKey>
+        <![CDATA[
+        INSERT INTO
+        basic_tolllane (
+            pk_id ,
+            old_stationid ,
+            old_lanecode ,
+            tl_id ,
+            tl_tollplaza_pkid ,
+            tl_tollplazaid ,
+            tl_num ,
+            tl_reservednum ,
+            tl_type ,
+            tl_greentraffic ,
+            tl_tidaltime ,
+            tl_starttime ,
+            tl_endtime ,
+            tl_status ,
+            tl_weightcharge ,
+            remarks,
+            flag,
+            menu_id 
+        ) VALUES (
+            #{pkId,jdbcType=VARCHAR} ,
+            #{oldStationid,jdbcType=VARCHAR} ,
+            #{oldLanecode,jdbcType=VARCHAR} ,
+            #{tlId,jdbcType=VARCHAR} ,
+            #{tlTollplazaPkid,jdbcType=VARCHAR} ,
+            #{tlTollplazaid,jdbcType=VARCHAR} ,
+            #{tlNum,jdbcType=VARCHAR} ,
+            #{tlReservednum,jdbcType=VARCHAR} ,
+            #{tlType,jdbcType=INTEGER} ,
+            #{tlGreentraffic,jdbcType=INTEGER} ,
+            #{tlTidaltime,jdbcType=VARCHAR} ,
+            #{tlStarttime,jdbcType=VARCHAR} ,
+            #{tlEndtime,jdbcType=VARCHAR} ,
+            #{tlStatus,jdbcType=INTEGER} ,
+            #{tlWeightcharge,jdbcType=INTEGER},
+            #{remarks,jdbcType=VARCHAR},
+            #{flag, jdbcType=DECIMAL},
+            #{menuId,jdbcType=VARCHAR}  
+        )
+    ]]>
+        <!--
+            oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL
+            DB2: order="BEFORE"" values nextval for sequenceName
+            <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+            SELECT sequenceName.nextval AS ID FROM DUAL
+            </selectKey>
+        -->
+    </insert>
+
+    <update id="update"
+        parameterType="com.uk.sec.bns.client.model.BasicTolllane">
+        <![CDATA[
+        UPDATE basic_tolllane SET
+            old_stationid = #{oldStationid,jdbcType=VARCHAR} ,
+            old_lanecode = #{oldLanecode,jdbcType=VARCHAR} ,
+            tl_id = #{tlId,jdbcType=VARCHAR} ,
+            tl_tollplaza_pkid = #{tlTollplazaPkid,jdbcType=VARCHAR} ,
+            tl_tollplazaid = #{tlTollplazaid,jdbcType=VARCHAR} ,
+            tl_num = #{tlNum,jdbcType=VARCHAR} ,
+            tl_reservednum = #{tlReservednum,jdbcType=VARCHAR} ,
+            tl_type = #{tlType,jdbcType=INTEGER} ,
+            tl_greentraffic = #{tlGreentraffic,jdbcType=INTEGER} ,
+            tl_tidaltime = #{tlTidaltime,jdbcType=VARCHAR} ,
+            tl_starttime = #{tlStarttime,jdbcType=VARCHAR} ,
+            tl_endtime = #{tlEndtime,jdbcType=VARCHAR} ,
+            tl_status = #{tlStatus,jdbcType=INTEGER} ,
+            tl_weightcharge = #{tlWeightcharge,jdbcType=INTEGER},
+            remarks = #{remarks,jdbcType=VARCHAR},
+            flag =  #{flag, jdbcType=DECIMAL},
+            menu_id = #{menuId,jdbcType=VARCHAR}  
+        WHERE
+            pk_id = #{pkId} 
+    ]]>
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        <![CDATA[
+        delete from basic_tolllane where
+        pk_id = #{pkId} 
+    ]]>
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Integer"
+        resultMap="BasicTolllaneResult">
+        select
+        <include refid="basicTolllaneColumns" />
+        <![CDATA[
+            from basic_tolllane
+            where
+                pk_id = #{pkId} 
+        ]]>
+    </select>
+
+    <sql id="basicTolllaneDynamicWhere">
+        <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+        <where>
+            <if
+                test="@Ognl@isNotBlank(pkId)">
+                and basic_tolllane.pk_id = #{pkId}            </if>
+            <if
+                test="@Ognl@isNotBlank(oldStationid)">
+                and basic_tolllane.old_stationid = #{oldStationid}            </if>
+            <if
+                test="@Ognl@isNotBlank(oldLanecode)">
+                and basic_tolllane.old_lanecode = #{oldLanecode}            </if>
+            <if
+                test="@Ognl@isNotBlank(tlId)">
+                and basic_tolllane.tl_id = #{tlId}            </if>
+            <if
+                test="@Ognl@isNotBlank(tlTollplazaPkid)">
+                and basic_tolllane.tl_tollplaza_pkid = #{tlTollplazaPkid}            </if>
+            <if
+                test="@Ognl@isNotBlank(tlTollplazaid)">
+                and basic_tolllane.tl_tollplazaid = #{tlTollplazaid}            </if>
+            <if
+                test="@Ognl@isNotBlank(tlNum)">
+                and basic_tolllane.tl_num = #{tlNum}            </if>
+            <if
+                test="@Ognl@isNotBlank(tlReservednum)">
+                and basic_tolllane.tl_reservednum = #{tlReservednum}            </if>
+            <if
+                test="@Ognl@isNotBlank(tlType)">
+                and basic_tolllane.tl_type = #{tlType}            </if>
+            <if
+                test="@Ognl@isNotBlank(tlGreentraffic)">
+                and basic_tolllane.tl_greentraffic = #{tlGreentraffic}            </if>
+            <if
+                test="@Ognl@isNotBlank(tlTidaltime)">
+                and basic_tolllane.tl_tidaltime = #{tlTidaltime}            </if>
+            <if
+                test="@Ognl@isNotBlank(tlStarttime)">
+                and basic_tolllane.tl_starttime = #{tlStarttime}            </if>
+            <if
+                test="@Ognl@isNotBlank(tlEndtime)">
+                and basic_tolllane.tl_endtime = #{tlEndtime}            </if>
+            <if
+                test="@Ognl@isNotBlank(tlStatus)">
+                and basic_tolllane.tl_status = #{tlStatus}            </if>
+            <if
+                test="@Ognl@isNotBlank(tlWeightcharge)">
+                and basic_tolllane.tl_weightcharge = #{tlWeightcharge}            </if>
+            <if
+                test="@Ognl@isNotBlank(remarks)">
+                and basic_tolllane.remarks  = #{remarks}            </if>
+        	<if
+                test="@Ognl@isNotBlank(menuId)">
+                and basic_tolllane.menu_id = #{menuId}            </if>
+            <if
+                test="@Ognl@isNotBlank(flag)">
+                and basic_tolllane.flag = #{flag}            </if>
+        </where>
+    </sql>
+
+    <select id="count" resultType="long">
+        select count(*) from basic_tolllane
+        <include refid="basicTolllaneDynamicWhere" />
+    </select>
+
+    <!--
+        分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+        因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect" resultMap="BasicTolllaneResult">
+        select
+        <include refid="basicTolllaneColumns" />
+        from basic_tolllane
+        <include refid="basicTolllaneDynamicWhere" />
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+                                  
+
+    <select id="findAll"
+        parameterType="com.uk.sec.bns.client.model.BasicTolllane"
+        resultMap="BasicTolllaneResult">
+        select
+        <include refid="basicTolllaneColumns" />
+        from basic_tolllane
+        <include refid="basicTolllaneDynamicWhere" />
+    </select>
+
+</mapper>

@@ -1,0 +1,54 @@
+# Default Properties file for use by StdSchedulerFactory
+# to create a Quartz Scheduler Instance, if a different
+# properties file is not explicitly specified.
+#
+
+org.quartz.scheduler.instanceName = DefaultQuartzScheduler
+org.quartz.scheduler.rmi.export = false
+org.quartz.scheduler.rmi.proxy = false
+org.quartz.scheduler.wrapJobExecutionInUserTransaction = false
+
+org.quartz.threadPool.class = org.quartz.simpl.SimpleThreadPool
+org.quartz.threadPool.threadCount = 10
+org.quartz.threadPool.threadPriority = 5
+org.quartz.threadPool.threadsInheritContextClassLoaderOfInitializingThread = true
+
+org.quartz.jobStore.misfireThreshold = 60000
+
+#presist to ram
+org.quartz.jobStore.class = org.quartz.simpl.RAMJobStore
+
+#presist to db
+#org.quartz.jobStore.class = org.quartz.impl.jdbcjobstore.JobStoreTX
+#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+#org.quartz.jobStore.useProperties = false
+#org.quartz.jobStore.tablePrefix = qrtz_
+#org.quartz.jobStore.isClustered = false
+#org.quartz.jobStore.maxMisfiresToHandleAtATime=1
+#org.quartz.jobStore.DataSource = myDS
+
+#db connection
+#org.quartz.dataSource.myDS.driver = com.mysql.jdbc.Driver
+#org.quartz.dataSource.myDS.URL = jdbc:mysql://localhost:3306/db?useUnicode=true&characterEncoding=UTF-8
+#org.quartz.dataSource.myDS.user = root
+#org.quartz.dataSource.myDS.password = root
+#org.quartz.dataSource.myDS.maxConnections = 15
+
+org.quartz.plugin.shutdownhook.class = org.quartz.plugins.management.ShutdownHookPlugin
+org.quartz.plugin.shutdownhook.cleanShutdown = true
+
+#Cron \u89e6\u53d1\u5668\u5229\u7528\u4e00\u7cfb\u5217\u7279\u6b8a\u5b57\u7b26\uff0c\u5982\u4e0b\u6240\u793a\uff1a
+#
+#\u53cd\u659c\u7ebf\uff08/\uff09\u5b57\u7b26\u8868\u793a\u589e\u91cf\u503c\u3002\u4f8b\u5982\uff0c\u5728\u79d2\u5b57\u6bb5\u4e2d\u201c5/15\u201d\u4ee3\u8868\u4ece\u7b2c 5 \u79d2\u5f00\u59cb\uff0c\u6bcf 15 \u79d2\u4e00\u6b21\u3002
+#\u95ee\u53f7\uff08?\uff09\u5b57\u7b26\u548c\u5b57\u6bcd L \u5b57\u7b26\u53ea\u6709\u5728\u6708\u5185\u65e5\u671f\u548c\u5468\u5185\u65e5\u671f\u5b57\u6bb5\u4e2d\u53ef\u7528\u3002\u95ee\u53f7\u8868\u793a\u8fd9\u4e2a\u5b57\u6bb5\u4e0d\u5305\u542b\u5177\u4f53\u503c\u3002\u6240\u4ee5\uff0c\u5982\u679c\u6307\u5b9a\u6708\u5185\u65e5\u671f\uff0c\u53ef\u4ee5\u5728\u5468\u5185\u65e5\u671f\u5b57\u6bb5\u4e2d\u63d2\u5165\u201c?\u201d\uff0c\u8868\u793a\u5468\u5185\u65e5\u671f\u503c\u65e0\u5173\u7d27\u8981\u3002\u5b57\u6bcd L \u5b57\u7b26\u662f last \u7684\u7f29\u5199\u3002\u653e\u5728\u6708\u5185\u65e5\u671f\u5b57\u6bb5\u4e2d\uff0c\u8868\u793a\u5b89\u6392\u5728\u5f53\u6708\u6700\u540e\u4e00\u5929\u6267\u884c\u3002\u5728\u5468\u5185\u65e5\u671f\u5b57\u6bb5\u4e2d\uff0c\u5982\u679c\u201cL\u201d\u5355\u72ec\u5b58\u5728\uff0c\u5c31\u7b49\u4e8e\u201c7\u201d\uff0c\u5426\u5219\u4ee3\u8868\u5f53\u6708\u5185\u5468\u5185\u65e5\u671f\u7684\u6700\u540e\u4e00\u4e2a\u5b9e\u4f8b\u3002\u6240\u4ee5\u201c0L\u201d\u8868\u793a\u5b89\u6392\u5728\u5f53\u6708\u7684\u6700\u540e\u4e00\u4e2a\u661f\u671f\u65e5\u6267\u884c\u3002
+#\u5728\u6708\u5185\u65e5\u671f\u5b57\u6bb5\u4e2d\u7684\u5b57\u6bcd\uff08W\uff09\u5b57\u7b26\u628a\u6267\u884c\u5b89\u6392\u5728\u6700\u9760\u8fd1\u6307\u5b9a\u503c\u7684\u5de5\u4f5c\u65e5\u3002\u628a\u201c1W\u201d\u653e\u5728\u6708\u5185\u65e5\u671f\u5b57\u6bb5\u4e2d\uff0c\u8868\u793a\u628a\u6267\u884c\u5b89\u6392\u5728\u5f53\u6708\u7684\u7b2c\u4e00\u4e2a\u5de5\u4f5c\u65e5\u5185\u3002
+#\u4e95\u53f7\uff08#\uff09\u5b57\u7b26\u4e3a\u7ed9\u5b9a\u6708\u4efd\u6307\u5b9a\u5177\u4f53\u7684\u5de5\u4f5c\u65e5\u5b9e\u4f8b\u3002\u628a\u201cMON#2\u201d\u653e\u5728\u5468\u5185\u65e5\u671f\u5b57\u6bb5\u4e2d\uff0c\u8868\u793a\u628a\u4efb\u52a1\u5b89\u6392\u5728\u5f53\u6708\u7684\u7b2c\u4e8c\u4e2a\u661f\u671f\u4e00\u3002
+#\u661f\u53f7\uff08*\uff09\u5b57\u7b26\u662f\u901a\u914d\u5b57\u7b26\uff0c\u8868\u793a\u8be5\u5b57\u6bb5\u53ef\u4ee5\u63a5\u53d7\u4efb\u4f55\u53ef\u80fd\u7684\u503c\u3002
+#\u5b57\u6bb5 \u5141\u8bb8\u503c \u5141\u8bb8\u7684\u7279\u6b8a\u5b57\u7b26 
+#\u79d2 0-59 , - * / 
+#\u5206 0-59 , - * / 
+#\u5c0f\u65f6 0-23 , - * / 
+#\u65e5\u671f 1-31 , - * ? / L W C 
+#\u6708\u4efd 1-12 \u6216\u8005 JAN-DEC , - * / 
+#\u661f\u671f 1-7 \u6216\u8005 SUN-SAT , - * ? / L C # 
+#\u5e74\uff08\u53ef\u9009\uff09 \u7559\u7a7a, 1970-2099 , - * /

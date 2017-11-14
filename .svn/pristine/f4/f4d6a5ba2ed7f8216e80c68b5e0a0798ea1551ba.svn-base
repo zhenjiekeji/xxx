@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="BasicTollbooth">
+
+    <resultMap id="BasicTollboothResult"
+        type="com.uk.sec.bns.client.model.BasicTollbooth">
+        <result property="pkId" column="pkId"/>
+        <result property="oldStationid" column="oldStationid"/>
+        <result property="oldTollboothcode" column="oldTollboothcode"/>
+        <result property="tbId" column="tbId"/>
+        <result property="tbTolllanePkid" column="tbTolllanePkid"/>
+        <result property="tbTolllaneid" column="tbTolllaneid"/>
+        <result property="tbNum" column="tbNum"/>
+        <result property="tbReservednum" column="tbReservednum"/>
+        <result property="tbType" column="tbType"/>
+        <result property="tbClass" column="tbClass"/>
+        <result property="tbStarttime" column="tbStarttime"/>
+        <result property="tbEndtime" column="tbEndtime"/>
+        <result property="tbStatus" column="tbStatus"/>
+        <result property="remarks" column="remarks"/>
+        <result property="flag" column="flag"/>
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="basicTollboothColumns">
+        <![CDATA[
+            basic_tollbooth.pk_id as pkId,
+            basic_tollbooth.old_stationid as oldStationid,
+            basic_tollbooth.old_tollboothcode as oldTollboothcode,
+            basic_tollbooth.tb_id as tbId,
+            basic_tollbooth.tb_tolllane_pkid as tbTolllanePkid,
+            basic_tollbooth.tb_tolllaneid as tbTolllaneid,
+            basic_tollbooth.tb_num as tbNum,
+            basic_tollbooth.tb_reservednum as tbReservednum,
+            basic_tollbooth.tb_type as tbType,
+            basic_tollbooth.tb_class as tbClass,
+            basic_tollbooth.tb_starttime as tbStarttime,
+            basic_tollbooth.tb_endtime as tbEndtime,
+            basic_tollbooth.tb_status as tbStatus,
+            basic_tollbooth.remarks as remarks,
+            basic_tollbooth.flag as flag
+        ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert"
+        parameterType="com.uk.sec.bns.client.model.BasicTollbooth">
+        <selectKey resultType="java.lang.String" order="BEFORE"
+            keyProperty="pkId">
+            SELECT sys_guid() AS ID FROM DUAL
+        </selectKey>
+        <![CDATA[
+        INSERT INTO
+        basic_tollbooth (
+            pk_id ,
+            old_stationid ,
+            old_tollboothcode ,
+            tb_id ,
+            tb_tolllane_pkid ,
+            tb_tolllaneid ,
+            tb_num ,
+            tb_reservednum ,
+            tb_type ,
+            tb_class ,
+            tb_starttime ,
+            tb_endtime ,
+            tb_status,
+            remarks,
+            flag
+        ) VALUES (
+            #{pkId,jdbcType=VARCHAR} ,
+            #{oldStationid,jdbcType=VARCHAR} ,
+            #{oldTollboothcode,jdbcType=VARCHAR} ,
+            #{tbId,jdbcType=VARCHAR} ,
+            #{tbTolllanePkid,jdbcType=VARCHAR} ,
+            #{tbTolllaneid,jdbcType=VARCHAR} ,
+            #{tbNum,jdbcType=VARCHAR} ,
+            #{tbReservednum,jdbcType=VARCHAR} ,
+            #{tbType,jdbcType=INTEGER} ,
+            #{tbClass,jdbcType=INTEGER} ,
+            #{tbStarttime,jdbcType=VARCHAR} ,
+            #{tbEndtime,jdbcType=VARCHAR} ,
+            #{tbStatus,jdbcType=INTEGER},
+            #{remarks,jdbcType=VARCHAR},
+            #{flag, jdbcType=DECIMAL}
+        )
+    ]]>
+        <!--
+            oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL
+            DB2: order="BEFORE"" values nextval for sequenceName
+            <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+            SELECT sequenceName.nextval AS ID FROM DUAL
+            </selectKey>
+        -->
+    </insert>
+
+    <update id="update"
+        parameterType="com.uk.sec.bns.client.model.BasicTollbooth">
+        <![CDATA[
+        UPDATE basic_tollbooth SET
+            old_stationid = #{oldStationid,jdbcType=VARCHAR} ,
+            old_tollboothcode = #{oldTollboothcode,jdbcType=VARCHAR} ,
+            tb_id = #{tbId,jdbcType=VARCHAR} ,
+            tb_tolllane_pkid = #{tbTolllanePkid,jdbcType=VARCHAR} ,
+            tb_tolllaneid = #{tbTolllaneid,jdbcType=VARCHAR} ,
+            tb_num = #{tbNum,jdbcType=VARCHAR} ,
+            tb_reservednum = #{tbReservednum,jdbcType=VARCHAR} ,
+            tb_type = #{tbType,jdbcType=INTEGER} ,
+            tb_class = #{tbClass,jdbcType=INTEGER} ,
+            tb_starttime = #{tbStarttime,jdbcType=VARCHAR} ,
+            tb_endtime = #{tbEndtime,jdbcType=VARCHAR} ,
+            tb_status = #{tbStatus,jdbcType=INTEGER} ,
+            remarks = #{remarks,jdbcType=VARCHAR},
+            flag =  #{flag, jdbcType=DECIMAL}
+        WHERE
+            pk_id = #{pkId} 
+    ]]>
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        <![CDATA[
+        delete from basic_tollbooth where
+        pk_id = #{pkId} 
+    ]]>
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Integer"
+        resultMap="BasicTollboothResult">
+        select
+        <include refid="basicTollboothColumns" />
+        <![CDATA[
+            from basic_tollbooth
+            where
+                pk_id = #{pkId} 
+        ]]>
+    </select>
+
+    <sql id="basicTollboothDynamicWhere">
+        <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+        <where>
+            <if
+                test="@Ognl@isNotBlank(pkId)">
+                and basic_tollbooth.pk_id = #{pkId}            </if>
+            <if
+                test="@Ognl@isNotBlank(oldStationid)">
+                and basic_tollbooth.old_stationid = #{oldStationid}            </if>
+            <if
+                test="@Ognl@isNotBlank(oldTollboothcode)">
+                and basic_tollbooth.old_tollboothcode = #{oldTollboothcode}            </if>
+            <if
+                test="@Ognl@isNotBlank(tbId)">
+                and basic_tollbooth.tb_id = #{tbId}            </if>
+            <if
+                test="@Ognl@isNotBlank(tbTolllanePkid)">
+                and basic_tollbooth.tb_tolllane_pkid = #{tbTolllanePkid}            </if>
+            <if
+                test="@Ognl@isNotBlank(tbTolllaneid)">
+                and basic_tollbooth.tb_tolllaneid = #{tbTolllaneid}            </if>
+            <if
+                test="@Ognl@isNotBlank(tbNum)">
+                and basic_tollbooth.tb_num = #{tbNum}            </if>
+            <if
+                test="@Ognl@isNotBlank(tbReservednum)">
+                and basic_tollbooth.tb_reservednum = #{tbReservednum}            </if>
+            <if
+                test="@Ognl@isNotBlank(tbType)">
+                and basic_tollbooth.tb_type = #{tbType}            </if>
+            <if
+                test="@Ognl@isNotBlank(tbClass)">
+                and basic_tollbooth.tb_class = #{tbClass}            </if>
+            <if
+                test="@Ognl@isNotBlank(tbStarttime)">
+                and basic_tollbooth.tb_starttime = #{tbStarttime}            </if>
+            <if
+                test="@Ognl@isNotBlank(tbEndtime)">
+                and basic_tollbooth.tb_endtime = #{tbEndtime}            </if>
+            <if
+                test="@Ognl@isNotBlank(tbStatus)">
+                and basic_tollbooth.tb_status = #{tbStatus}            </if>
+            <if
+                test="@Ognl@isNotBlank(remarks)">
+                and basic_tollbooth.remarks  = #{remarks}            </if>
+            <if
+                test="@Ognl@isNotBlank(flag)">
+                and basic_tollbooth.flag = #{flag}            </if>
+        </where>
+    </sql>
+
+    <select id="count" resultType="long">
+        select count(*) from basic_tollbooth
+        <include refid="basicTollboothDynamicWhere" />
+    </select>
+
+    <!--
+        分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+        因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect" resultMap="BasicTollboothResult">
+        select
+        <include refid="basicTollboothColumns" />
+        from basic_tollbooth
+        <include refid="basicTollboothDynamicWhere" />
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+                              
+
+    <select id="findAll"
+        parameterType="com.uk.sec.bns.client.model.BasicTollbooth"
+        resultMap="BasicTollboothResult">
+        select
+        <include refid="basicTollboothColumns" />
+        from basic_tollbooth
+        <include refid="basicTollboothDynamicWhere" />
+    </select>
+
+</mapper>

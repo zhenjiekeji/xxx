@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="uk_supervision"
+  id="myeclipse.1355295578046"
+  context-root="/uk_supervision"
+  j2ee-spec="5.0"
+  archive="uk_supervision.war">
+  <attributes>
+    <attribute name="webrootdir" value="/WebRoot" />
+  </attributes>
+</project-module>
+

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="SecPrivilegeRole">
+
+    <resultMap id="SecPrivilegeRoleResult"
+        type="com.uk.sec.privilege.framework.privilege.model.SecPrivilegeRole">
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="secPrivilegeRoleColumns">
+        <![CDATA[
+            SEC_PRIVILEGE_ROLE.ROLE_ID as roleId,
+            SEC_PRIVILEGE_ROLE.ROLE_NAME as roleName,
+            SEC_PRIVILEGE_ROLE.ROLE_DESCRIPTION as roleDescription,
+            SEC_PRIVILEGE_ROLE.ROLE_LEVEL as roleLevel
+        ]]>
+    </sql>
+
+	<sql id="secPrivilegeRoleColumnsRelate">
+        <![CDATA[
+            r.ROLE_ID as roleId,
+            r.ROLE_NAME as roleName,
+            r.ROLE_DESCRIPTION as roleDescription,
+            r.ROLE_LEVEL as roleLevel
+        ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecPrivilegeRole">
+        <selectKey resultType="java.lang.String" order="BEFORE"
+            keyProperty="roleId">
+            SELECT sys_guid() AS ROLE_ID FROM DUAL
+        </selectKey>
+        <![CDATA[
+        INSERT INTO
+        SEC_PRIVILEGE_ROLE (
+            ROLE_ID ,
+            ROLE_NAME ,
+            ROLE_DESCRIPTION ,
+            ROLE_LEVEL
+        ) VALUES (
+            #{roleId,jdbcType=VARCHAR} ,
+            #{roleName,jdbcType=VARCHAR} ,
+            #{roleDescription,jdbcType=VARCHAR} ,
+            #{roleLevel,jdbcType=DECIMAL}
+        )
+    ]]>
+        <!--
+            oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL
+            DB2: order="BEFORE"" values nextval for sequenceName
+            <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+            SELECT sequenceName.nextval AS ID FROM DUAL
+            </selectKey>
+        -->
+    </insert>
+
+    <update id="update"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecPrivilegeRole">
+        <![CDATA[
+        UPDATE SEC_PRIVILEGE_ROLE SET
+            ROLE_NAME = #{roleName,jdbcType=VARCHAR} ,
+            ROLE_DESCRIPTION = #{roleDescription,jdbcType=VARCHAR} ,
+            ROLE_LEVEL = #{roleLevel,jdbcType=DECIMAL}
+        WHERE
+            ROLE_ID = #{roleId}
+    ]]>
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        <![CDATA[
+        delete from SEC_PRIVILEGE_ROLE where
+        ROLE_ID = #{id}
+    ]]>
+    </delete>
+
+    <select id="getById" parameterType="java.lang.String"
+        resultMap="SecPrivilegeRoleResult">
+        select
+        <include refid="secPrivilegeRoleColumns" />
+        <![CDATA[
+            from SEC_PRIVILEGE_ROLE
+            where
+                ROLE_ID = #{id}
+        ]]>
+    </select>
+
+    <sql id="secPrivilegeRoleDynamicWhere">
+        <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+        <where>
+            <if
+                test="@Ognl@isNotBlank(roleId)">
+                and SEC_PRIVILEGE_ROLE.ROLE_ID = #{roleId}            </if>
+            <if
+                test="@Ognl@isNotBlank(roleName)">
+                and SEC_PRIVILEGE_ROLE.ROLE_NAME like #{roleName,javaType=Like,jdbcType=VARCHAR} escape '\'         </if>
+            <if
+                test="@Ognl@isNotBlank(roleDescription)">
+                and SEC_PRIVILEGE_ROLE.ROLE_DESCRIPTION = #{roleDescription}            </if>
+            <if
+                test="@Ognl@isNotBlank(roleLevel)">
+                and SEC_PRIVILEGE_ROLE.ROLE_LEVEL = #{roleLevel}            </if>
+        </where>
+    </sql>
+
+    <select id="count" resultType="long">
+        select count(*) from SEC_PRIVILEGE_ROLE
+        <include refid="secPrivilegeRoleDynamicWhere" />
+    </select>
+
+    <!--
+        分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+        因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect" resultMap="SecPrivilegeRoleResult">
+        select
+        <include refid="secPrivilegeRoleColumns" />
+        from SEC_PRIVILEGE_ROLE
+        <include refid="secPrivilegeRoleDynamicWhere" />
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+    <select id="findAll"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecPrivilegeRole"
+        resultMap="SecPrivilegeRoleResult">
+        select
+        <include refid="secPrivilegeRoleColumns" />
+        from SEC_PRIVILEGE_ROLE
+        <include refid="secPrivilegeRoleDynamicWhere" />
+    </select>
+
+    <select id="findAllByMap"
+        resultMap="SecPrivilegeRoleResult">
+        select
+        <include refid="secPrivilegeRoleColumns" />
+        from SEC_PRIVILEGE_ROLE
+        <include refid="secPrivilegeRoleDynamicWhere" />
+    </select>
+
+	<!-- 根据角色的id排序查询角色表中的所有角色列表 -->
+    <select id="selectAllRoleListOrder" resultMap="SecPrivilegeRoleResult">
+        select
+        <include refid="secPrivilegeRoleColumns" />
+        from SEC_PRIVILEGE_ROLE
+        order by ROLE_NAME
+    </select>
+
+	<!-- 根据用户id查询关联的角色列表 -->
+    <select id="selectUserRoleList" parameterType="java.lang.String" resultMap="SecPrivilegeRoleResult">
+        select
+        <include refid="secPrivilegeRoleColumnsRelate"/>
+        from SEC_PRIVILEGE_ROLE r,SEC_PRIVILEGE_USER_ROLE u
+        where u.ROLE_ID=r.ROLE_ID and u.LOGIN_ID=#{loginId}
+        order by r.ROLE_NAME
+    </select>
+</mapper>

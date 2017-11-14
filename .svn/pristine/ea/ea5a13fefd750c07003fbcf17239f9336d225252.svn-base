@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="BasicTollstation">
+
+    <resultMap id="BasicTollstationResult"
+        type="com.uk.sec.bns.client.model.BasicTollstation">
+        <result property="pkId" column="pkId"/>
+        <result property="oldCode" column="oldCode"/>
+        <result property="tsId" column="tsId"/>
+        <result property="tsCode" column="tsCode"/>
+        <result property="tsSectionid" column="tsSectionid"/>
+        <result property="tsNum" column="tsNum"/>
+        <result property="tsReservednum" column="tsReservednum"/>
+        <result property="tsName" column="tsName"/>
+        <result property="tsType" column="tsType"/>
+        <result property="tsTollplazacount" column="tsTollplazacount"/>
+        <result property="tsNeighborid" column="tsNeighborid"/>
+        <result property="tsStakenum" column="tsStakenum"/>
+        <result property="tsSectionPkid" column="tsSectionPkid"/>
+        <result property="remarks" column="remarks"/>
+        <result property="menuId" column="menuId"/>
+        <result property="flag" column="flag"/>
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="basicTollstationColumns">
+        <![CDATA[
+            basic_tollstation.pk_id as pkId,
+            basic_tollstation.old_code as oldCode,
+            basic_tollstation.ts_id as tsId,
+            basic_tollstation.ts_code as tsCode,
+            basic_tollstation.ts_sectionid as tsSectionid,
+            basic_tollstation.ts_num as tsNum,
+            basic_tollstation.ts_reservednum as tsReservednum,
+            basic_tollstation.ts_name as tsName,
+            basic_tollstation.ts_type as tsType,
+            basic_tollstation.ts_tollplazacount as tsTollplazacount,
+            basic_tollstation.ts_neighborid as tsNeighborid,
+            basic_tollstation.ts_stakenum as tsStakenum,
+            basic_tollstation.ts_section_pkid as tsSectionPkid,
+            basic_tollstation.remarks as remarks,
+            basic_tollstation.flag as flag,
+            basic_tollstation.menu_id as menuId
+        ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert"
+        parameterType="com.uk.sec.bns.client.model.BasicTollstation">
+        <selectKey resultType="java.lang.String" order="BEFORE"
+            keyProperty="pkId">
+            SELECT sys_guid() AS ID FROM DUAL
+        </selectKey>
+        <![CDATA[
+        INSERT INTO
+        basic_tollstation (
+            pk_id ,
+            old_code ,
+            ts_id ,
+            ts_code,
+            ts_sectionid ,
+            ts_num ,
+            ts_reservednum ,
+            ts_name ,
+            ts_type ,
+            ts_tollplazacount ,
+            ts_neighborid ,
+            ts_stakenum ,
+            ts_section_pkid,
+            remarks,
+            flag,
+            menu_id 
+        ) VALUES (
+            #{pkId,jdbcType=VARCHAR} ,
+            #{oldCode,jdbcType=VARCHAR} ,
+            #{tsId,jdbcType=VARCHAR} ,
+            #{tsCode,jdbcType=VARCHAR} ,
+            #{tsSectionid,jdbcType=VARCHAR} ,
+            #{tsNum,jdbcType=VARCHAR} ,
+            #{tsReservednum,jdbcType=VARCHAR} ,
+            #{tsName,jdbcType=VARCHAR} ,
+            #{tsType,jdbcType=INTEGER} ,
+            #{tsTollplazacount,jdbcType=INTEGER} ,
+            #{tsNeighborid,jdbcType=VARCHAR} ,
+            #{tsStakenum,jdbcType=VARCHAR} ,
+            #{tsSectionPkid,jdbcType=VARCHAR},
+            #{remarks,jdbcType=VARCHAR},
+            #{flag, jdbcType=DECIMAL},
+            #{menuId,jdbcType=VARCHAR}  
+        )
+    ]]>
+        <!--
+            oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL
+            DB2: order="BEFORE"" values nextval for sequenceName
+            <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+            SELECT sequenceName.nextval AS ID FROM DUAL
+            </selectKey>
+        -->
+    </insert>
+
+    <update id="update"
+        parameterType="com.uk.sec.bns.client.model.BasicTollstation">
+        <![CDATA[
+        UPDATE basic_tollstation SET
+            old_code = #{oldCode,jdbcType=VARCHAR} ,
+            ts_id = #{tsId,jdbcType=VARCHAR} ,
+            ts_code = #{tsCode,jdbcType=VARCHAR} ,
+            ts_sectionid = #{tsSectionid,jdbcType=VARCHAR} ,
+            ts_num = #{tsNum,jdbcType=VARCHAR} ,
+            ts_reservednum = #{tsReservednum,jdbcType=VARCHAR} ,
+            ts_name = #{tsName,jdbcType=VARCHAR} ,
+            ts_type = #{tsType,jdbcType=INTEGER} ,
+            ts_tollplazacount = #{tsTollplazacount,jdbcType=INTEGER} ,
+            ts_neighborid = #{tsNeighborid,jdbcType=VARCHAR} ,
+            ts_stakenum = #{tsStakenum,jdbcType=VARCHAR} ,
+            ts_section_pkid = #{tsSectionPkid,jdbcType=VARCHAR},
+            remarks = #{remarks,jdbcType=VARCHAR},
+            flag =  #{flag, jdbcType=DECIMAL},
+            menu_id = #{menuId,jdbcType=VARCHAR} 
+        WHERE
+            pk_id = #{pkId} 
+    ]]>
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        <![CDATA[
+        delete from basic_tollstation where
+        pk_id = #{pkId} 
+    ]]>
+    </delete>
+
+    <select id="getById" parameterType="java.lang.String"
+        resultMap="BasicTollstationResult">
+        select
+        <include refid="basicTollstationColumns" />
+        <![CDATA[
+            from basic_tollstation
+            where
+                pk_id = #{pkId} 
+        ]]>
+    </select>
+
+    <sql id="basicTollstationDynamicWhere">
+        <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+        <where>
+            <if
+                test="@Ognl@isNotBlank(pkId)">
+                and basic_tollstation.pk_id = #{pkId}            </if>
+            <if
+                test="@Ognl@isNotBlank(oldCode)">
+                and basic_tollstation.old_code = #{oldCode}            </if>
+            <if
+                test="@Ognl@isNotBlank(tsId)">
+                and basic_tollstation.ts_id = #{tsId}            </if>
+            <if
+                test="@Ognl@isNotBlank(tsCode)">
+                and basic_tollstation.ts_code = #{tsCode}            </if>
+            <if
+                test="@Ognl@isNotBlank(tsSectionid)">
+                and basic_tollstation.ts_sectionid = #{tsSectionid}            </if>
+            <if
+                test="@Ognl@isNotBlank(tsNum)">
+                and basic_tollstation.ts_num = #{tsNum}            </if>
+            <if
+                test="@Ognl@isNotBlank(tsReservednum)">
+                and basic_tollstation.ts_reservednum = #{tsReservednum}            </if>
+            <if
+                test="@Ognl@isNotBlank(tsName)">
+                and basic_tollstation.ts_name = #{tsName}            </if>
+            <if
+                test="@Ognl@isNotBlank(tsType)">
+                and basic_tollstation.ts_type = #{tsType}            </if>
+            <if
+                test="@Ognl@isNotBlank(tsTollplazacount)">
+                and basic_tollstation.ts_tollplazacount = #{tsTollplazacount}            </if>
+            <if
+                test="@Ognl@isNotBlank(tsNeighborid)">
+                and basic_tollstation.ts_neighborid = #{tsNeighborid}            </if>
+            <if
+                test="@Ognl@isNotBlank(tsStakenum)">
+                and basic_tollstation.ts_stakenum = #{tsStakenum}            </if>
+            <if
+                test="@Ognl@isNotBlank(tsSectionPkid)">
+                and basic_tollstation.ts_section_pkid = #{tsSectionPkid}            </if>
+            <if
+                test="@Ognl@isNotBlank(remarks)">
+                and basic_tollstation.remarks  = #{remarks}            </if>
+        	<if
+                test="@Ognl@isNotBlank(menuId)">
+                and basic_tollstation.menu_id = #{menuId}            </if>
+            <if
+                test="@Ognl@isNotBlank(flag)">
+                and basic_tollstation.flag = #{flag}            </if>
+        </where>
+    </sql>
+
+    <select id="count" resultType="long">
+        select count(*) from basic_tollstation
+        <include refid="basicTollstationDynamicWhere" />
+    </select>
+
+    <!--
+        分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+        因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect" resultMap="BasicTollstationResult">
+        select
+        <include refid="basicTollstationColumns" />
+        from basic_tollstation
+        <include refid="basicTollstationDynamicWhere" />
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+                            
+
+    <select id="findAll"
+        parameterType="com.uk.sec.bns.client.model.BasicTollstation"
+        resultMap="BasicTollstationResult">
+        select
+        <include refid="basicTollstationColumns" />
+        from basic_tollstation
+        <include refid="basicTollstationDynamicWhere" />
+    </select>
+
+</mapper>

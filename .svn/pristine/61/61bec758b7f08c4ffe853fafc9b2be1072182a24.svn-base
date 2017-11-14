@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="SecPrivilegeUserDMZ">
+
+    <resultMap id="SecPrivilegeUserResult"
+        type="com.uk.sec.privilege.framework.privilege.model.SecPrivilegeUserDMZ">
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="secPrivilegeUserColumns">
+        <![CDATA[
+            SEC_PRIVILEGE_USER.LOGIN_ID as loginId,
+            SEC_PRIVILEGE_USER.PASSWD as passwd,
+            SEC_PRIVILEGE_USER.USER_NAME as userName,
+            SEC_PRIVILEGE_USER.USER_EMAIL as userEmail,
+            SEC_PRIVILEGE_USER.USER_PHONE as userPhone,
+            SEC_PRIVILEGE_USER.USER_MOBILEPHONE as userMobilephone,
+            SEC_PRIVILEGE_USER.USER_DEPT as userDept,
+            SEC_PRIVILEGE_USER.CREATE_TIME as createTime,
+            SEC_PRIVILEGE_USER.LOGIN_NAME as loginName,
+            SEC_PRIVILEGE_USER.USER_STATE as userState
+        ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecPrivilegeUser">
+        <selectKey resultType="java.lang.String" order="BEFORE"
+            keyProperty="loginId">
+            SELECT sys_guid() AS LOGIN_ID FROM DUAL
+        </selectKey>
+        <![CDATA[
+        INSERT INTO
+        SEC_PRIVILEGE_USER (
+            LOGIN_ID ,
+            PASSWD ,
+            USER_NAME ,
+            USER_EMAIL ,
+            USER_PHONE ,
+            USER_MOBILEPHONE ,
+            USER_DEPT ,
+            CREATE_TIME ,
+            LOGIN_NAME ,
+            USER_STATE
+        ) VALUES (
+            #{loginId,jdbcType=VARCHAR} ,
+            #{passwd,jdbcType=VARCHAR} ,
+            #{userName,jdbcType=VARCHAR} ,
+            #{userEmail,jdbcType=VARCHAR} ,
+            #{userPhone,jdbcType=VARCHAR} ,
+            #{userMobilephone,jdbcType=VARCHAR} ,
+            #{userDept,jdbcType=VARCHAR} ,
+            #{createTime,jdbcType=TIMESTAMP} ,
+            #{loginName,jdbcType=VARCHAR} ,
+            #{userState,jdbcType=DECIMAL}
+        )
+    ]]>
+        <!--
+            oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL
+            DB2: order="BEFORE"" values nextval for sequenceName
+            <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+            SELECT sequenceName.nextval AS ID FROM DUAL
+            </selectKey>
+        -->
+    </insert>
+
+    <update id="update"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecPrivilegeUser">
+        <![CDATA[
+        UPDATE SEC_PRIVILEGE_USER SET
+            PASSWD = #{passwd,jdbcType=VARCHAR} ,
+            USER_NAME = #{userName,jdbcType=VARCHAR} ,
+            USER_EMAIL = #{userEmail,jdbcType=VARCHAR} ,
+            USER_PHONE = #{userPhone,jdbcType=VARCHAR} ,
+            USER_MOBILEPHONE = #{userMobilephone,jdbcType=VARCHAR} ,
+            USER_DEPT = #{userDept,jdbcType=VARCHAR} ,
+            CREATE_TIME = #{createTime,jdbcType=DATE} ,
+            LOGIN_NAME = #{loginName,jdbcType=VARCHAR} ,
+            USER_STATE =  #{userState,jdbcType=DECIMAL}
+        WHERE
+            LOGIN_ID = #{loginId}
+    ]]>
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        <![CDATA[
+        delete from SEC_PRIVILEGE_USER where
+        LOGIN_ID = #{id}
+    ]]>
+    </delete>
+
+    <select id="getById" parameterType="java.lang.String"
+        resultMap="SecPrivilegeUserResult">
+        select
+        <include refid="secPrivilegeUserColumns" />
+        <![CDATA[
+            from SEC_PRIVILEGE_USER
+            where
+                LOGIN_ID = #{id}
+        ]]>
+    </select>
+
+    <sql id="secPrivilegeUserDynamicWhere">
+        <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+        <where>
+            <if
+                test="@Ognl@isNotBlank(loginId)">
+                and SEC_PRIVILEGE_USER.LOGIN_ID = #{loginId}            </if>
+            <if
+                test="@Ognl@isNotBlank(passwd)">
+                and SEC_PRIVILEGE_USER.PASSWD = #{passwd}            </if>
+            <if
+                test="@Ognl@isNotBlank(userName)">
+                and SEC_PRIVILEGE_USER.USER_NAME like #{userName,javaType=Like,jdbcType=VARCHAR} escape '\'         </if>
+            <if
+                test="@Ognl@isNotBlank(userEmail)">
+                and SEC_PRIVILEGE_USER.USER_EMAIL = #{userEmail}            </if>
+            <if
+                test="@Ognl@isNotBlank(userPhone)">
+                and SEC_PRIVILEGE_USER.USER_PHONE = #{userPhone}            </if>
+            <if
+                test="@Ognl@isNotBlank(userMobilephone)">
+                and SEC_PRIVILEGE_USER.USER_MOBILEPHONE = #{userMobilephone}            </if>
+            <if
+                test="@Ognl@isNotBlank(userDept)">
+                and SEC_PRIVILEGE_USER.USER_DEPT = #{userDept}            </if>
+            <if
+                test="@Ognl@isNotBlank(createTime)">
+                and SEC_PRIVILEGE_USER.CREATE_TIME = #{createTime}            </if>
+            <if
+                test="@Ognl@isNotBlank(loginName)">
+                and SEC_PRIVILEGE_USER.LOGIN_NAME = #{loginName}          </if>
+            <if
+                test="@Ognl@isNotBlank(userState)">
+                and SEC_PRIVILEGE_USER.USER_STATE = #{userState}          </if>
+        </where>
+    </sql>
+
+    <sql id="secPrivilegeUserByUserAndPd">
+        <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+        <where>
+            <if
+                test="@Ognl@isNotBlank(loginName)">
+                and SEC_PRIVILEGE_USER.LOGIN_NAME = #{loginName}            </if>
+            <if
+                test="@Ognl@isNotBlank(passwd)">
+                and LOWER(SEC_PRIVILEGE_USER.PASSWD) = LOWER(#{passwd})       </if>
+        </where>
+    </sql>
+
+    <select id="count" resultType="long">
+        select count(*) from SEC_PRIVILEGE_USER
+        <include refid="secPrivilegeUserDynamicWhere" />
+    </select>
+
+    <!--
+        分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+        因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect" resultMap="SecPrivilegeUserResult">
+        select
+        <include refid="secPrivilegeUserColumns" />
+        from SEC_PRIVILEGE_USER
+        <include refid="secPrivilegeUserDynamicWhere" />
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+    <select id="getByLoginName"
+        resultMap="SecPrivilegeUserResult" parameterType="java.lang.String">
+        select
+        <include refid="secPrivilegeUserColumns" />
+        <![CDATA[
+            from SEC_PRIVILEGE_USER where SEC_PRIVILEGE_USER.LOGIN_NAME = #{loginName}
+        ]]>
+    </select>
+
+    <select id="findAll"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecPrivilegeUser"
+        resultMap="SecPrivilegeUserResult">
+        select
+        <include refid="secPrivilegeUserColumns" />
+        from SEC_PRIVILEGE_USER
+        <include refid="secPrivilegeUserDynamicWhere" />
+    </select>
+
+    <select id="findAllByMap"
+        resultMap="SecPrivilegeUserResult">
+        select
+        <include refid="secPrivilegeUserColumns" />
+        from SEC_PRIVILEGE_USER
+        <include refid="secPrivilegeUserDynamicWhere" />
+    </select>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="secDistinctPrivilegeUserColumns">
+        <![CDATA[
+            distinct s.LOGIN_NAME as loginName,
+            s.LOGIN_ID as loginId,
+            s.PASSWD as passwd,
+            s.USER_NAME as userName,
+            s.USER_EMAIL as userEmail,
+            s.USER_PHONE as userPhone,
+            s.USER_MOBILEPHONE as userMobilephone,
+            s.USER_DEPT as userDept,
+            s.CREATE_TIME as createTime,
+            s.USER_STATE as userState
+        ]]>
+    </sql>
+<!-- 根据工作流节点得到该节点相应的审批人列表 -->
+    <select id="getApproverListByNode" parameterType="java.util.Map" resultMap="SecPrivilegeUserResult">
+         select
+         <include refid="secDistinctPrivilegeUserColumns" />
+         from SEC_PRIVILEGE_USER s ,SEC_PRIVILEGE_USER_ROLE spur,SYS_USER_DEPT sud,SYS_USER_INFO sui
+         <where>
+         	<if test="@Ognl@isNotBlank(candidateLoginNameArray)">
+				and s.LOGIN_NAME IN 
+				<foreach collection="candidateLoginNameArray" item="candidateLoginName"  open="(" separator="," close=")">  
+       				#{candidateLoginName}  
+     			</foreach>			 	 
+		 	</if>
+		 	and spur.LOGIN_ID=s.LOGIN_ID
+         	<if test="@Ognl@isNotBlank(roleIdArray)">
+				and spur.ROLE_ID IN 
+				<foreach collection="roleIdArray" item="roleId"  open="(" separator="," close=")">  
+       				#{roleId}
+     			</foreach>			 	 
+		 	</if>
+		 	and sud.AM_PERSONALNO=sui.AM_XH AND sui.CT_USERID = s.LOGIN_NAME
+         	<if test="@Ognl@isNotBlank(deptIdArray)">
+				and date_format(sud.CT_ORGANIZATIONID) IN 
+				<foreach collection="deptIdArray" item="deptId"  open="(" separator="," close=")">  
+       				#{deptId}
+     			</foreach>			 	 
+		 	</if>		 	
+         </where>
+         order by s.USER_NAME		
+    </select>  
+
+    <!--
+        根据登录名、MD5加密后的密码查询用户-->
+    <select id="findByLoginNameAndPd"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecPrivilegeUser"
+        resultMap="SecPrivilegeUserResult">
+        select
+        <include refid="secPrivilegeUserColumns" />
+        from SEC_PRIVILEGE_USER
+        <include refid="secPrivilegeUserByUserAndPd" />
+    </select>
+
+    <!-- 根据登陆NAME查询该用户所在的部门 -->
+    <select id="findDeptInfoByLoginName"
+        parameterType="java.lang.String"
+        resultType="java.lang.String">
+        select sdi.CT_ORGANIZATIONNAME
+         from SYS_USER_DEPT sud,SYS_DEPT_INFO sdi,SEC_PRIVILEGE_USER spu
+         WHERE spu.LOGIN_NAME = #{loginName} and spu.USER_DEPT = sud.CT_ORGANIZATIONID and sud.AM_OID = sdi.AM_OID
+    </select>
+</mapper>

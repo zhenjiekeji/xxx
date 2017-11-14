@@ -1,0 +1,27 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>无标题文档</title>
+<style>body,html{height:100%; padding:0px;margin:0px;}</style>
+<script language=javascript type=text/javascript>
+function changeLeft(){    frmElem=window.parent.document.getElementById("middlezone");
+if (frmElem.cols != "0, 9, *") {	frmElem.cols = "0, 9, *";
+Elem=document.getElementById('menuSwitch')
+Elem.innerHTML="<img src=\"images/fopen.jpg\">";
+} else {	frmElem.cols = "200, 9, *";
+Elem=document.getElementById('menuSwitch')
+Elem.innerHTML="<img src=\"images/fclose.jpg\">";
+}}
+</script>
+</head>
+
+<body id="midbar" background="images/f5_bg.jpg">
+<table style="CURSOR: pointer" height="100%" cellSpacing=0 cellPadding=0 width="9" border="0">
+	<tr>
+		<td id="menuSwitch" onClick="changeLeft()" height="100%"><img src="images/fclose.jpg" width="9" height="48" />
+		</td>
+	</tr>
+</table>
+</body>
+</html>

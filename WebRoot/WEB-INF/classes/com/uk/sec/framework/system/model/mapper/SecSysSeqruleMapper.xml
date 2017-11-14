@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SecSysSeqrule">
+
+    <resultMap id="SecSysSeqruleResult"
+        type="com.uk.sec.framework.system.model.SecSysSeqrule">
+        <result property="ruleId" column="ruleId"/>
+        <result property="ruleCname" column="ruleCname"/>
+        <result property="ruleEname" column="ruleEname"/>
+        <result property="seqLength" column="seqLength"/>
+        <result property="seqStartvalue" column="seqStartvalue"/>
+        <result property="seqStep" column="seqStep"/>
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="secSysSeqruleColumns">
+        <![CDATA[
+            SEC_SYS_SEQRULE.RULE_ID as ruleId,
+            SEC_SYS_SEQRULE.RULE_CNAME as ruleCname,
+            SEC_SYS_SEQRULE.RULE_ENAME as ruleEname,
+            SEC_SYS_SEQRULE.SEQ_LENGTH as seqLength,
+            SEC_SYS_SEQRULE.SEQ_STARTVALUE as seqStartvalue,
+            SEC_SYS_SEQRULE.SEQ_STEP as seqStep
+        ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert"
+        parameterType="com.uk.sec.framework.system.model.SecSysSeqrule">
+        <selectKey resultType="java.lang.String" order="BEFORE"
+            keyProperty="ruleId">
+            SELECT sys_guid() AS ID FROM DUAL
+        </selectKey>
+        <![CDATA[
+        INSERT INTO
+        SEC_SYS_SEQRULE (
+            RULE_ID ,
+            RULE_CNAME ,
+            RULE_ENAME ,
+            SEQ_LENGTH ,
+            SEQ_STARTVALUE ,
+            SEQ_STEP 
+        ) VALUES (
+            #{ruleId,jdbcType=VARCHAR} ,
+            #{ruleCname,jdbcType=VARCHAR} ,
+            #{ruleEname,jdbcType=VARCHAR} ,
+            #{seqLength,jdbcType=DECIMAL} ,
+            #{seqStartvalue,jdbcType=DECIMAL} ,
+            #{seqStep,jdbcType=DECIMAL} 
+        )
+    ]]>
+        <!--
+            oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL
+            DB2: order="BEFORE"" values nextval for sequenceName
+            <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+            SELECT sequenceName.nextval AS ID FROM DUAL
+            </selectKey>
+        -->
+    </insert>
+
+    <update id="update"
+        parameterType="com.uk.sec.framework.system.model.SecSysSeqrule">
+        <![CDATA[
+        UPDATE SEC_SYS_SEQRULE SET
+            RULE_CNAME = #{ruleCname,jdbcType=VARCHAR} ,
+            RULE_ENAME = #{ruleEname,jdbcType=VARCHAR} ,
+            SEQ_LENGTH = #{seqLength,jdbcType=DECIMAL} ,
+            SEQ_STARTVALUE = #{seqStartvalue,jdbcType=DECIMAL} ,
+            SEQ_STEP = #{seqStep,jdbcType=DECIMAL} 
+        WHERE
+            RULE_ID = #{ruleId} 
+    ]]>
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        <![CDATA[
+        delete from SEC_SYS_SEQRULE where
+        RULE_ID = #{id} 
+    ]]>
+    </delete>
+
+    <select id="getById" parameterType="java.lang.String"
+        resultMap="SecSysSeqruleResult">
+        select
+        <include refid="secSysSeqruleColumns" />
+        <![CDATA[
+            from SEC_SYS_SEQRULE
+            where
+                RULE_ID = #{id} 
+        ]]>
+    </select>
+
+    <sql id="secSysSeqruleDynamicWhere">
+        <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+        <where>
+            <if
+                test="@Ognl@isNotBlank(ruleId)">
+                and SEC_SYS_SEQRULE.RULE_ID = #{ruleId}            </if>
+            <if
+                test="@Ognl@isNotBlank(ruleCname)">
+                and SEC_SYS_SEQRULE.RULE_CNAME = #{ruleCname}            </if>
+            <if
+                test="@Ognl@isNotBlank(ruleEname)">
+                and SEC_SYS_SEQRULE.RULE_ENAME = #{ruleEname}            </if>
+            <if
+                test="@Ognl@isNotBlank(seqLength)">
+                and SEC_SYS_SEQRULE.SEQ_LENGTH = #{seqLength}            </if>
+            <if
+                test="@Ognl@isNotBlank(seqStartvalue)">
+                and SEC_SYS_SEQRULE.SEQ_STARTVALUE = #{seqStartvalue}            </if>
+            <if
+                test="@Ognl@isNotBlank(seqStep)">
+                and SEC_SYS_SEQRULE.SEQ_STEP = #{seqStep}            </if>
+        </where>
+    </sql>
+
+    <select id="count" resultType="long">
+        select count(*) from SEC_SYS_SEQRULE
+        <include refid="secSysSeqruleDynamicWhere" />
+    </select>
+
+    <!--
+        分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+        因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect" resultMap="SecSysSeqruleResult">
+        select
+        <include refid="secSysSeqruleColumns" />
+        from SEC_SYS_SEQRULE
+        <include refid="secSysSeqruleDynamicWhere" />
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+    <select id="findAll"
+        parameterType="com.uk.sec.framework.system.model.SecSysSeqrule"
+        resultMap="SecSysSeqruleResult">
+        select
+        <include refid="secSysSeqruleColumns" />
+        from SEC_SYS_SEQRULE
+        <include refid="secSysSeqruleDynamicWhere" />
+    </select>
+    
+    <select id="findAllByMap"
+        resultMap="SecSysSeqruleResult">
+        select
+        <include refid="secSysSeqruleColumns" />
+        from SEC_SYS_SEQRULE
+        <include refid="secSysSeqruleDynamicWhere" />
+    </select>
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!--
+	修改说明:
+	1.修改pakcage的namespace属性,因为URL访问规则是: /namesapce/Entity/method.do
+	2.根据你的包结构修改action节点的class属性
+-->
+
+<struts><!--
+	<package name="homepage" namespace="/bns/homepage"
+		extends="custom-default">
+		 通过URL访问的路径是 /namesapce/Entity/method.do 
+		<action name="*/*" method="{2}"
+			class="com.uk.sec.ciq.supervision.bns.homepage.action.{1}Action">
+			<result name="*" type="direct">通过Action直接返回，这一行无需修改</result>
+		</action>
+
+		 异步验证上传文件名是否存在 
+		<action name="validDocName" method="validDocName"
+			class="com.uk.sec.ciq.supervision.bns.homepage.action.CiqSupportDocumentAction">
+			<result type="stream">
+				<param name="contentType">text/html</param> 默认为text/plain 
+				<param name="inputName">inputStream</param> 默认就为inputStream 
+			</result>
+		</action>
+	</package>
+
+	-->
+	<!-- 客户管理 -->
+	<!-- <package name="kClientInfo" namespace="/bns/client"
+		extends="custom-default">
+		通过URL访问的路径是 /namesapce/Entity/method.do
+		<action name="*/*" method="{2}"
+			class="com.uk.sec.bns.client.action.{1}Action">
+			<result name="*" type="direct">通过Action直接返回，这一行无需修改</result>
+		</action>
+	</package> -->
+	<package name="client" namespace="/bns/client"
+		extends="custom-default">
+		<!-- 通过URL访问的路径是 /namesapce/Entity/method.do -->
+		<action name="*/*" method="{2}"
+			class="com.uk.sec.bns.client.action.{1}Action">
+			<result name="*" type="direct">通过Action直接返回，这一行无需修改</result>
+		</action>
+	</package>
+    
+</struts>

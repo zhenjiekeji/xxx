@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="SecPrivilegeMenuOper">
+
+    <resultMap id="SecPrivilegeMenuOperResult"
+        type="com.uk.sec.privilege.framework.privilege.model.SecPrivilegeMenuOper">
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="secPrivilegeMenuOperColumns">
+        <![CDATA[
+            SEC_PRIVILEGE_MENU_OPER.MENU_ID as menuId,
+            SEC_PRIVILEGE_MENU_OPER.OPERATION_ID as operationId,
+            SEC_PRIVILEGE_MENU_OPER.MENU_OPER_ID as menuOperId
+        ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecPrivilegeMenuOper">
+        <selectKey resultType="java.lang.String" order="BEFORE"
+            keyProperty="menuOperId">
+            SELECT sys_guid() AS MENU_OPER_ID FROM DUAL
+        </selectKey>
+        <![CDATA[
+        INSERT INTO
+        SEC_PRIVILEGE_MENU_OPER (
+            MENU_ID ,
+            OPERATION_ID ,
+            MENU_OPER_ID
+        ) VALUES (
+            #{menuId,jdbcType=VARCHAR} ,
+            #{operationId,jdbcType=DECIMAL} ,
+            #{menuOperId,jdbcType=VARCHAR}
+        )
+    ]]>
+        <!--
+            oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL
+            DB2: order="BEFORE"" values nextval for sequenceName
+            <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+            SELECT sequenceName.nextval AS ID FROM DUAL
+            </selectKey>
+        -->
+    </insert>
+
+    <update id="update"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecPrivilegeMenuOper">
+        <![CDATA[
+        UPDATE SEC_PRIVILEGE_MENU_OPER SET
+            MENU_ID = #{menuId,jdbcType=VARCHAR} ,
+            OPERATION_ID = #{operationId,jdbcType=DECIMAL}
+        WHERE
+            MENU_OPER_ID = #{menuOperId}
+    ]]>
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        <![CDATA[
+        delete from SEC_PRIVILEGE_MENU_OPER where
+        MENU_OPER_ID = #{id}
+    ]]>
+    </delete>
+
+    <delete id="deleteByMenuId" parameterType="java.lang.String">
+        delete from SEC_PRIVILEGE_MENU_OPER where
+		MENU_ID = #{menuId}
+    </delete>
+
+    <select id="getById" parameterType="java.lang.String"
+        resultMap="SecPrivilegeMenuOperResult">
+        select
+        <include refid="secPrivilegeMenuOperColumns" />
+        <![CDATA[
+            from SEC_PRIVILEGE_MENU_OPER
+            where
+                MENU_OPER_ID = #{id}
+        ]]>
+    </select>
+
+    <sql id="secPrivilegeMenuOperDynamicWhere">
+        <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+        <where>
+            <if
+                test="@Ognl@isNotBlank(menuId)">
+                and SEC_PRIVILEGE_MENU_OPER.MENU_ID = #{menuId}            </if>
+            <if
+                test="@Ognl@isNotBlank(operationId)">
+                and SEC_PRIVILEGE_MENU_OPER.OPERATION_ID = #{operationId}            </if>
+            <if
+                test="@Ognl@isNotBlank(menuOperId)">
+                and SEC_PRIVILEGE_MENU_OPER.MENU_OPER_ID = #{menuOperId}            </if>
+        </where>
+    </sql>
+
+    <select id="count" resultType="long">
+        select count(*) from SEC_PRIVILEGE_MENU_OPER
+        <include refid="secPrivilegeMenuOperDynamicWhere" />
+    </select>
+
+    <!--
+        分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+        因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect" resultMap="SecPrivilegeMenuOperResult">
+        select
+        <include refid="secPrivilegeMenuOperColumns" />
+        from SEC_PRIVILEGE_MENU_OPER
+        <include refid="secPrivilegeMenuOperDynamicWhere" />
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+    <select id="findAll"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecPrivilegeMenuOper"
+        resultMap="SecPrivilegeMenuOperResult">
+        select
+        <include refid="secPrivilegeMenuOperColumns" />
+        from SEC_PRIVILEGE_MENU_OPER
+        <include refid="secPrivilegeMenuOperDynamicWhere" />
+    </select>
+
+    <select id="findAllByMap"
+        resultMap="SecPrivilegeMenuOperResult">
+        select
+        <include refid="secPrivilegeMenuOperColumns" />
+        from SEC_PRIVILEGE_MENU_OPER
+        <include refid="secPrivilegeMenuOperDynamicWhere" />
+    </select>
+
+    <!-- 根据条件查询出List,数组里是不重复的menuId具体值 -->
+  <select id="selectDistinctMenuId" resultType="java.lang.String">
+    select distinct spm.MENU_ID
+    from SEC_PRIVILEGE_MENU_OPER spmo,(select * from SEC_PRIVILEGE_MENU order by MENU_VIEWORDER) spm
+    where spmo.MENU_ID=spm.MENU_ID and spm.MENU_FLAG=1
+  </select>
+</mapper>

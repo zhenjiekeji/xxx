@@ -1,0 +1,277 @@
+.eXtremeTable {
+    margin:0;
+    padding:0;
+}
+.eXtremeTable .pageNum {
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.eXtremeTable .currentNum {
+    font-weight: bold;
+    color: green;
+    font-size: 12px;
+}
+
+.eXtremeTable select {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 9px;
+    border: solid 1px #EEE;
+    width:50px;
+}
+
+.eXtremeTable .tableRegion {
+    border: 1px solid #A4BED4;
+    border-top:none;
+    border-right:none;
+	border-spacing:0px;
+    /*padding: 2px;*/
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 12px;
+    margin-top: 0px;
+    /*table-layout:fixed;
+    width:100%;
+    white-space:nowrap;*/
+}
+
+.eXtremeTable .filter {
+    background-color: #F4F4F4;
+}
+
+.eXtremeTable .filter td {
+    padding: 2px;
+}
+
+.eXtremeTable .title {
+    color: #444444;
+    font-weight: bold;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 15px;
+    vertical-align: middle;
+}
+
+.eXtremeTable .titleRow {
+    background-color: #F4F4F4;
+}
+
+.eXtremeTable .titleRow td {
+    border-bottom: 1px solid #308dbb;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.eXtremeTable .titleRow span {
+    color: #444444;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.eXtremeTable .filter input {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 12px;
+    border: solid 1px grey;
+    padding: 1px;
+}
+
+.eXtremeTable .filter select {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 9px;
+    border: solid 1px #EEE;
+}
+
+.eXtremeTable .tableHeader {
+	border-collapse:separate;
+    background-color: #308dbb;
+    background-image:url(images/sky_blue_grid.gif);
+    background-repeat:repeat-x;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    text-align: center;
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin: 0px;
+    border:1px solid #A4BED4;
+	border-left-color: #fdfdfd;
+	color:black;height:24px;white-space:normal;z-index:999;
+}
+
+.eXtremeTable .tableHeaderSort {
+	border-collapse:separate;
+    background-color: #308dbb;
+    background-image:url(images/sky_blue_grid.gif);
+    background-repeat:repeat-x;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    text-align: center;
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin: 0px;
+    border:1px solid #A4BED4;
+	border-left-color: #fdfdfd;
+    color:black;height:24px;white-space:normal;z-index:999;
+}
+
+.tableBody{
+	/*-------------------overflow-y:auto; overflow-x:auto; height:300px;*/
+    border:1px solid  #A4BED4;
+}
+/*---------------------.tableBody td{ height:auto;}*/
+.eXtremeTable .odd a, .even a {
+    font-size: 12px;
+}
+
+.eXtremeTable .odd td, .eXtremeTable .even td {
+    border-right:1px solid #A4BED4;
+    padding-top: 2px;
+    padding-right: 3px;
+    padding-bottom: 2px;
+    padding-left: 3px;
+    vertical-align: middle;
+    font-family: Tahoma, verdana, arial, helvetica, sans-serif;
+    font-size: 12px;
+    white-space:normal;
+}
+
+.eXtremeTable .odd td {
+    background-color: #FFFFFF;
+    border-bottom:1px solid #fff;
+}
+
+.eXtremeTable .even td {
+    background-color: #ebf2fb;
+    border-bottom:1px solid #ebf2fb;
+}
+
+.eXtremeTable .highlight td {
+    border-right:1px solid #A4BED4;
+    padding-top: 2px;
+    padding-right: 3px;
+    padding-bottom: 2px;
+    padding-left: 3px;
+    vertical-align: middle;
+    font-family:  Tahoma,verdana, arial, helvetica, sans-serif;
+    font-size: 12px;
+    color: black;
+    background: #ffea9d;
+    border-bottom:1px solid #f4d870;
+}
+
+.eXtremeTable .highlight a, .highlight a {
+}
+
+.eXtremeTable .compactToolbar {
+    background-color: #f7fafe;
+    border-right:1px solid #A4BED4;
+    border-top:1px solid #A4BED4;
+}
+
+.eXtremeTable .toolbar {
+    background-color: #F4F4F4;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 9px;
+    margin-right: 1px;
+    border-right: 1px solid silver;
+    border-left: 1px solid silver;
+    border-top: 1px solid silver;
+    border-bottom: 1px solid silver;
+}
+
+.eXtremeTable .toolbar a:hover {
+    background-color: transparent;
+}
+
+.eXtremeTable .toolbar td {
+    color: #444444;
+    padding: 0px 3px 0px 3px;
+    text-align: center;
+}
+
+.eXtremeTable .separator {
+    width: 7px;
+}
+
+.eXtremeTable .statusBar {
+    background-color: #f7fafe;
+    border-top:1px solid #A4BED4;
+    padding-left:3px;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 12px;
+    text-align:left;
+}
+
+.eXtremeTable .filterButtons {
+    background-color: #F4F4F4;
+    text-align: right;
+}
+
+.eXtremeTable .title span {
+    margin-left: 7px;
+}
+
+.eXtremeTable .formButtons {
+    display: block;
+    margin-top: 12px;
+    margin-left: 5px;
+}
+
+.eXtremeTable .formButton {
+    cursor: pointer;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: #308dbb;
+    color: white;
+    margin-top: 5px;
+    border: outset 1px #333;
+    vertical-align: middle;
+}
+
+.eXtremeTable .calcRow {
+    background-color: #F4F4F4;
+}
+
+.eXtremeTable .calcTitle {
+    background-color: #F4F4F4;
+    color: black;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.eXtremeTable .calcResult {
+    background-color: #F4F4F4;
+    color: black;
+    font-family: verdana, arial, helvetica, sans-serif;
+}
+
+
+.List {
+    float: left; width: 700px; margin: 5px 0; over-flow:scroll
+}
+.ListTitle, .ListRow {
+    float: left; width: 699px; line-height: 20px; text-align: center; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc; list-style: none outside;
+}
+.ListTitle { color: white; font-weight: bold; background: gray; border-top: 1px solid #ccc; }
+.ListRow { cursor: pointer; }
+.Row1 { background: #ddd; }
+.Row2 { background: #eee; }
+.ListTitle li, .ListRow li {
+    float: left; display: block; height: 20px; border-right: 1px solid #ccc;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis;
+}
+.ListTitle li { font-weight: bold; }
+.ListExternalInterfaceColumn1 { width: 50px; }
+.ListExternalInterfaceColumn2 { width: 200px; }
+.ListExternalInterfaceColumn3 { width: 265px; }
+.ListExternalInterfaceColumn4 { width: 180px; }
+
+
+

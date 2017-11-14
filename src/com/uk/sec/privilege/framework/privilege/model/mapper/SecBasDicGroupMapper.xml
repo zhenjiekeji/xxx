@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="SecBasDicGroup">
+
+    <resultMap id="SecBasDicGroupResult"
+        type="com.uk.sec.privilege.framework.privilege.model.SecBasDicGroup">
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="secBasDicGroupColumns">
+        <![CDATA[
+            SEC_BAS_DIC_GROUP.GROUP_ID as groupId,
+            SEC_BAS_DIC_GROUP.GROUP_NAME as groupName,
+            SEC_BAS_DIC_GROUP.GROUP_DESCRIPTION as groupDescription,
+            SEC_BAS_DIC_GROUP.PARENT_ID as parentId,
+            SEC_BAS_DIC_GROUP.GROUP_VIEWORDER as groupVieworder,
+            SEC_BAS_DIC_GROUP.GROUP_FLAG as groupFlag
+        ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecBasDicGroup">
+        <selectKey resultType="java.lang.String" order="BEFORE"
+            keyProperty="groupId">
+            SELECT sys_guid() AS GROUP_ID FROM DUAL
+        </selectKey>
+        <![CDATA[
+        INSERT INTO
+        SEC_BAS_DIC_GROUP (
+            GROUP_ID ,
+            GROUP_NAME ,
+            GROUP_DESCRIPTION ,
+            PARENT_ID ,
+            GROUP_VIEWORDER ,
+            GROUP_FLAG
+        ) VALUES (
+            #{groupId,jdbcType=VARCHAR} ,
+            #{groupName,jdbcType=VARCHAR} ,
+            #{groupDescription,jdbcType=VARCHAR} ,
+            #{parentId,jdbcType=VARCHAR} ,
+            #{groupVieworder,jdbcType=VARCHAR} ,
+            #{groupFlag,jdbcType=DECIMAL}
+        )
+    ]]>
+        <!--
+            oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL
+            DB2: order="BEFORE"" values nextval for sequenceName
+            <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+            SELECT sequenceName.nextval AS ID FROM DUAL
+            </selectKey>
+        -->
+    </insert>
+
+    <update id="update"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecBasDicGroup">
+        <![CDATA[
+        UPDATE SEC_BAS_DIC_GROUP SET
+            GROUP_NAME = #{groupName,jdbcType=VARCHAR} ,
+            GROUP_DESCRIPTION = #{groupDescription,jdbcType=VARCHAR} ,
+            PARENT_ID = #{parentId,jdbcType=VARCHAR} ,
+            GROUP_VIEWORDER = #{groupVieworder,jdbcType=VARCHAR} ,
+            GROUP_FLAG = #{groupFlag,jdbcType=DECIMAL}
+        WHERE
+            GROUP_ID = #{groupId}
+    ]]>
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        <![CDATA[
+        delete from SEC_BAS_DIC_GROUP where
+        GROUP_ID = #{id}
+    ]]>
+    </delete>
+
+    <select id="getById" parameterType="java.lang.String"
+        resultMap="SecBasDicGroupResult">
+        select
+        <include refid="secBasDicGroupColumns" />
+        <![CDATA[
+            from SEC_BAS_DIC_GROUP
+            where
+                GROUP_ID = #{id}
+        ]]>
+    </select>
+
+    <sql id="secBasDicGroupDynamicWhere">
+        <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+        <where>
+            SEC_BAS_DIC_GROUP.GROUP_FLAG = 1
+            <if
+                test="@Ognl@isNotBlank(groupId)">
+                and SEC_BAS_DIC_GROUP.GROUP_ID = #{groupId}            </if>
+            <if
+                test="@Ognl@isNotBlank(groupName)">
+                and SEC_BAS_DIC_GROUP.GROUP_NAME = #{groupName}            </if>
+            <if
+                test="@Ognl@isNotBlank(groupDescription)">
+                and SEC_BAS_DIC_GROUP.GROUP_DESCRIPTION = #{groupDescription}            </if>
+            <if
+                test="@Ognl@isNotBlank(parentId)">
+                and SEC_BAS_DIC_GROUP.PARENT_ID = #{parentId}            </if>
+            <if
+                test="@Ognl@isNotBlank(groupVieworder)">
+                and SEC_BAS_DIC_GROUP.GROUP_VIEWORDER = #{groupVieworder}            </if>
+
+        </where>
+    </sql>
+
+    <select id="count" resultType="long">
+        select count(*) from SEC_BAS_DIC_GROUP
+        <include refid="secBasDicGroupDynamicWhere" />
+    </select>
+
+    <!--
+        分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+        因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect" resultMap="SecBasDicGroupResult">
+        select
+        <include refid="secBasDicGroupColumns" />
+        from SEC_BAS_DIC_GROUP
+        <include refid="secBasDicGroupDynamicWhere" />
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+
+    </select>
+
+    <select id="findAll"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecBasDicGroup"
+        resultMap="SecBasDicGroupResult">
+        select
+        <include refid="secBasDicGroupColumns" />
+        from SEC_BAS_DIC_GROUP
+        <include refid="secBasDicGroupDynamicWhere" />
+    </select>
+
+    <select id="findAllByMap"
+        resultMap="SecBasDicGroupResult">
+        select
+        <include refid="secBasDicGroupColumns" />
+        from SEC_BAS_DIC_GROUP
+        <include refid="secBasDicGroupDynamicWhere" />
+
+    </select>
+
+    <!--根据父ID查询子节点-->
+	<select id="querySonTreeByFatherId" parameterType="com.uk.sec.privilege.framework.privilege.model.SecBasDicGroup"
+		resultMap="SecBasDicGroupResult">
+        select
+        <include refid="secBasDicGroupColumns" />
+        from SEC_BAS_DIC_GROUP
+        where 1=1
+
+        	 <if test="@Ognl@isNotBlank(parentId)">
+                 and PARENT_ID = #{parentId}
+             </if>
+             <if test="@Ognl@isBlank(parentId)">
+				 and PARENT_ID is null
+             </if>
+				 and GROUP_FLAG = 1
+
+        ORDER BY GROUP_VIEWORDER
+    </select>
+
+<!-- 根据分组的显示顺序查询分组表中的所有可见的列表 -->
+    <select id="selectAllGroupListOrder" resultMap="SecBasDicGroupResult">
+        select
+        <include refid="secBasDicGroupColumns" />
+        from SEC_BAS_DIC_GROUP
+        where GROUP_FLAG = 1
+        order by GROUP_VIEWORDER
+    </select>
+
+<!-- 返回当前选中菜单下级菜单的最大vieworder -->
+    <select id="selectGroupVieworderMax" parameterType="com.uk.sec.privilege.framework.privilege.model.SecBasDicGroup"
+    	resultType="java.lang.String">
+        select max(GROUP_VIEWORDER)
+        from SEC_BAS_DIC_GROUP
+        where 1=1
+        <if test="@Ognl@isNotBlank(groupId)">
+			and PARENT_ID = #{groupId}
+        </if>
+        <if test="@Ognl@isBlank(groupId)">
+			and PARENT_ID is null
+        </if>
+        and GROUP_FLAG = 1
+    </select>
+
+</mapper>

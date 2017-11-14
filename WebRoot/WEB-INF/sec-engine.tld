@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+<taglib>
+	<tlib-version>1.0</tlib-version>
+	<jsp-version>1.2</jsp-version>
+	<short-name>SEC_TagLib</short-name>
+	<uri>http://www.sec.ac.cn</uri>
+	<description>科技引擎标签库</description>
+	<!-- 自定义表格标签 -->
+	<tag>
+		<name>templateTable</name>
+		<tag-class>com.ac.sec.engine.framework.info.tag.TemplateTableTag</tag-class>
+		<body-content>jsp</body-content>
+	    <attribute>
+	      <name>hasItemValue</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>hasItemDesc</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>hasTotal</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>hasScore</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>itemValueMap</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>itemDescMap</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>totalMap</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>edit</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>extendNums</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>templateDir</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[The template directory.]]></description>
+	    </attribute>
+	    <attribute>
+	      <name>theme</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[The theme (other than default) to use for rendering the element]]></description>
+	    </attribute>
+	    <attribute>
+	      <name>template</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[The template (other than default) to use for rendering the element]]></description>
+	    </attribute>	    
+	</tag>
+	<!-- 风险评估自定义表格标签 -->
+	<tag>
+		<name>riskEvalTemplateTable</name>
+		<tag-class>com.ac.sec.engine.framework.info.tag.RiskEvalTemplateTableTag</tag-class>
+		<body-content>jsp</body-content>
+	    <attribute>
+	      <name>itemSeriousMap</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>itemPossMap</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>itemValueMap</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>itemWeightMap</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>	    
+	    <attribute>
+	      <name>totalMap</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>edit</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>templateDir</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[The template directory.]]></description>
+	    </attribute>
+	    <attribute>
+	      <name>theme</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[The theme (other than default) to use for rendering the element]]></description>
+	    </attribute>
+	    <attribute>
+	      <name>template</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[The template (other than default) to use for rendering the element]]></description>
+	    </attribute>	    
+	</tag>	
+</taglib>

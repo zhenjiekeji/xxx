@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias type="com.uk.sec.framework.mybatishandler.Like" alias="Like"/>
+    </typeAliases>
+    <typeHandlers>
+        <typeHandler handler="com.uk.sec.framework.mybatishandler.LikeTypeHandler" javaType="com.uk.sec.framework.mybatishandler.Like" jdbcType="VARCHAR"/>
+        <typeHandler handler="com.uk.sec.framework.mybatishandler.TrimStringTypeHandler" javaType="String" jdbcType="VARCHAR"/>
+        <typeHandler handler="com.uk.sec.framework.mybatishandler.TrimStringTypeHandler" javaType="String" jdbcType="CHAR"/>
+        <typeHandler handler="com.uk.sec.framework.mybatishandler.TrimNStringTypeHandler" javaType="String" jdbcType="NVARCHAR"/>
+        <typeHandler handler="com.uk.sec.framework.mybatishandler.TrimNStringTypeHandler" javaType="String" jdbcType="NCHAR"/>
+    </typeHandlers>
+    <plugins>
+        <!-- 指定数据库分页方言Dialect, 其它方言:OracleDialect,SQLServerDialect,SybaseDialect,DB2Dialect,PostgreSQLDialect,MySQLDialect,DerbyDialect,HSQLDialect-->
+        <plugin
+            interceptor="com.uk.sec.framework.interceptor.OffsetLimitInterceptor">
+            <property name="dialectClass"
+                value="cn.org.rapid_framework.jdbc.dialect.OracleDialect" />
+        </plugin>
+    </plugins>
+
+</configuration>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!--
+修改说明:
+    1.修改pakcage的namespace属性,因为URL访问规则是: /namesapce/Entity/method.do
+    2.根据你的包结构修改action节点的class属性
+ -->
+
+<struts>
+    <!-- engine-->
+    <package name="engine" namespace="/framework/engine/info" extends="custom-default">
+ 		 <!-- ajax.do -->   
+    	<action name="getSelectGroupJson" method="getSelectGroupJson" class="com.uk.sec.engine.framework.info.action.SecInfoItemAction">
+			<result name="*" type="direct">通过Action直接返回，这一行无需修改</result>
+        </action>
+    	<action name="itemTypeSelectGroupJson" method="itemTypeSelectGroupJson" class="com.uk.sec.engine.framework.info.action.SecInfoItemAction">
+			<result name="*" type="direct">通过Action直接返回，这一行无需修改</result>
+        </action>
+    	<action name="inputItemTypeSelectJson" method="inputItemTypeSelectJson" class="com.uk.sec.engine.framework.info.action.SecInfoItemAction">
+			<result name="*" type="direct">通过Action直接返回，这一行无需修改</result>
+        </action>
+    	<action name="zTreeSetGroup" method="zTreeSetGroup" class="com.uk.sec.engine.framework.info.action.SecInfoTemplateAction">
+			<result name="*" type="direct">通过Action直接返回，这一行无需修改</result>
+        </action>
+    	<action name="zTreeTemplateGroup" method="zTreeTemplateGroup" class="com.uk.sec.engine.framework.info.action.SecInfoTemplateAction">
+			<result name="*" type="direct">通过Action直接返回，这一行无需修改</result>
+        </action>
+        <!-- 通过URL访问的路径是 /namesapce/Entity/method.do -->
+        <action name="*/*" method="{2}" class="com.uk.sec.engine.framework.info.action.{1}Action">
+            <result name="*" type="direct">通过Action直接返回，这一行无需修改</result>
+        </action>
+    </package>
+    <!-- ectable-->
+    <package name="ectable" namespace="/framework/ectable" extends="custom-default">
+        <!-- 通过URL访问的路径是 /namesapce/Entity/method.do -->
+        <action name="*/*" method="{2}" class="com.uk.sec.framework.ectable.action.{1}Action">
+            <result name="*" type="direct">通过Action直接返回，这一行无需修改</result>
+        </action>
+    </package>
+
+    <!-- 文件上传下载-->
+    <package name="file" namespace="/framework/file" extends="custom-default">
+        <!-- 通过URL访问的路径是 /namesapce/Entity/method.do -->
+        <action name="*/*" method="{2}" class="com.uk.sec.framework.file.action.{1}Action">
+            <result name="*" type="direct">通过Action直接返回，这一行无需修改</result>
+        </action>
+    </package>
+
+	<!-- 异步权限管理-->
+    <package name="privilegeAsync" namespace="/framework/privilegeJson" extends="json-default">
+        <action name="zTreeMenuOrder" method="zTreeMenuOrder" class="com.uk.sec.privilege.framework.privilege.action.SecPrivilegeMenuAction">
+    		<result type="json">
+    			<param name="excludeNullProperties">true</param>
+    			<param name="root">sonTrees</param>
+    		</result>
+        </action>
+
+        <action name="zTreeGroupOrder" method="zTreeGroupOrder" class="com.uk.sec.privilege.framework.privilege.action.SecBasDicGroupAction">
+    		<result type="json">
+    			<param name="excludeNullProperties">true</param>
+    			<param name="root">sonTrees</param>
+    		</result>
+        </action>
+        <action name="zTreeSetOrder" method="zTreeSetOrder" class="com.uk.sec.engine.framework.info.action.SecInfoItemSetAction">
+    		<result type="json">
+    			<param name="excludeNullProperties">true</param>
+    			<param name="root">sonTrees</param>
+    		</result>
+        </action>
+    </package>
+
+	<!-- 权限管理-->
+	<package name="privilege" namespace="/framework/privilege" extends="custom-default">
+	
+         <!-- ajax.do -->   
+    	<action name="zTreeRoleGroup" method="zTreeRoleGroup" class="com.uk.sec.privilege.framework.privilege.action.SecPrivilegeRoleAction">
+    		<result type="stream">
+    			<param name="contentType">text/html</param><!-- 默认为text/plain -->
+    			<param name="inputName">inputStream</param><!-- 默认就为inputStream -->
+    		</result>
+        </action>
+        
+    	<action name="zTreeUser" method="zTreeUser" class="com.uk.sec.privilege.framework.privilege.action.SecPrivilegeUserAction">
+    		<result type="stream">
+    			<param name="contentType">text/html</param><!-- 默认为text/plain -->
+    			<param name="inputName">inputStream</param><!-- 默认就为inputStream -->
+    		</result>
+        </action>
+    
+    	<!-- 异步验证用户账号是否存在 -->
+    	<action name="ajaxValidLoginName" method="ajaxValidLoginName" class="com.uk.sec.privilege.framework.privilege.action.SecPrivilegeUserAction">
+    		<result type="stream">
+    			<param name="contentType">text/html</param><!-- 默认为text/plain -->
+    			<param name="inputName">inputStream</param><!-- 默认就为inputStream -->
+    		</result>
+        </action>
+        <!-- 通过URL访问的路径是 /namesapce/Entity/method.do -->
+        <action name="*/*" method="{2}" class="com.uk.sec.privilege.framework.privilege.action.{1}Action">
+            <result name="*" type="direct">通过Action直接返回，这一行无需修改</result>
+        </action>
+    </package>
+
+
+	<!-- 导入用户 接口 -->
+    <package name="ukinterface" namespace="/framework/ukinterface" extends="custom-default">
+         <!-- ajax.do -->   
+    	<action name="zTreeDeptOrder" method="zTreeDeptOrder" class="com.uk.sec.privilege.framework.ukinterface.action.SysDeptInfoAction">
+    		<result type="stream">
+    			<param name="contentType">text/html</param><!-- 默认为text/plain -->
+    			<param name="inputName">inputStream</param><!-- 默认就为inputStream -->
+    		</result>
+        </action>
+    
+        <!-- 通过URL访问的路径是 /namesapce/Entity/method.do -->
+        <action name="*/*" method="{2}" class="com.uk.sec.privilege.framework.ukinterface.action.{1}Action">
+            <result name="*" type="direct">通过Action直接返回，这一行无需修改</result>
+        </action>
+    </package>
+
+	<!-- 系统登录-->
+    <package name="login" extends="struts-default">
+    	<result-types>
+			<result-type name="direct"
+				class="cn.org.rapid_framework.struts2.dispatcher.DirectResult" />
+		</result-types>
+        <action name="login" method="login" class="com.uk.sec.privilege.framework.privilege.action.LoginAction">
+             <result name="*" type="direct"></result>
+        </action>
+        <action name="loginOut" method="loginOut" class="com.uk.sec.privilege.framework.privilege.action.LoginAction">
+             <result name="*" type="direct"></result>
+        </action>
+    </package>
+
+	<!-- 通过portal直接登陆后，页面链接地址进行服务器重定向 -->
+    <package name="loginFrame" extends="custom-default">
+        <action name="loginFrame" method="loginFrame" class="com.uk.sec.privilege.framework.privilege.action.LoginAction">
+              <result name="*" type="direct">
+              	<param name="roleName">roleName</param><!-- 默认就为roleName -->
+			  </result>
+        </action>
+    </package>
+    
+    <package name="systemRule" extends="custom-default" namespace="/framework/system">
+         <action name="*/*" method="{2}" class="com.uk.sec.framework.system.action.{1}Action">
+            <result name="*" type="direct">通过Action直接返回，这一行无需修改</result>
+        </action>
+    </package>
+
+</struts>

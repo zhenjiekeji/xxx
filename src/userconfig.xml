@@ -1,0 +1,10 @@
+<configuration>
+<fonts>
+ <font metrics-file="classpath:simkai.xml" kerning="yes" embed-file="file:///D:/work/limulus/src/simkai.ttf">
+    <font-triplet name="mysimkai" style="normal" weight="normal"/>
+ </font>
+</fonts>
+</configuration>
+
+
+

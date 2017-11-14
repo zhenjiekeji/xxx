@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="EctableColumn">
+
+    <resultMap id="EctableColumnResult"
+        type="com.uk.sec.framework.ectable.model.EctableColumn">
+        <result property="id" column="ectableColumn_id"/>
+        <result property="name" column="ectableColumn_name"/>
+        <result property="uniqueName" column="ectableColumn_uniqueName"/>
+        <result property="description" column="ectableColumn_description"/>
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="ectableColumnColumns">
+        <![CDATA[
+            ECTABLE_COLUMN.ID as ectableColumn_id,
+            ECTABLE_COLUMN.NAME as ectableColumn_name,
+            ECTABLE_COLUMN.UNIQUE_NAME as ectableColumn_uniqueName,
+            ECTABLE_COLUMN.DESCRIPTION as ectableColumn_description
+        ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert"
+        parameterType="com.uk.sec.framework.ectable.model.EctableColumn">
+        <selectKey resultType="java.lang.String" order="BEFORE"
+            keyProperty="id">
+            SELECT sys_guid() AS ID FROM DUAL
+        </selectKey>
+        <![CDATA[
+        INSERT INTO
+        ECTABLE_COLUMN (
+            ID ,
+            NAME ,
+            UNIQUE_NAME ,
+            DESCRIPTION 
+        ) VALUES (
+            #{id,jdbcType=VARCHAR} ,
+            #{name,jdbcType=VARCHAR} ,
+            #{uniqueName,jdbcType=VARCHAR} ,
+            #{description,jdbcType=VARCHAR} 
+        )
+    ]]>
+        <!--
+            oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL
+            DB2: order="BEFORE"" values nextval for sequenceName
+            <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+            SELECT sequenceName.nextval AS ID FROM DUAL
+            </selectKey>
+        -->
+    </insert>
+
+    <update id="update"
+        parameterType="com.uk.sec.framework.ectable.model.EctableColumn">
+        <![CDATA[
+        UPDATE ECTABLE_COLUMN SET
+            NAME = #{name,jdbcType=VARCHAR} ,
+            UNIQUE_NAME = #{uniqueName,jdbcType=VARCHAR} ,
+            DESCRIPTION = #{description,jdbcType=VARCHAR} 
+        WHERE
+            ID = #{id} 
+    ]]>
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        <![CDATA[
+        delete from ECTABLE_COLUMN where
+        ID = #{id} 
+    ]]>
+    </delete>
+
+    <select id="getById" parameterType="java.lang.String"
+        resultMap="EctableColumnResult">
+        select
+        <include refid="ectableColumnColumns" />
+        <![CDATA[
+            from ECTABLE_COLUMN
+            where
+                ID = #{id} 
+        ]]>
+    </select>
+
+    <sql id="ectableColumnDynamicWhere">
+        <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+        <where>
+            <if
+                test="@Ognl@isNotBlank(id)">
+                and ECTABLE_COLUMN.ID = #{id}            </if>
+            <if
+                test="@Ognl@isNotBlank(name)">
+                and ECTABLE_COLUMN.NAME = #{name}            </if>
+            <if
+                test="@Ognl@isNotBlank(uniqueName)">
+                and ECTABLE_COLUMN.UNIQUE_NAME = #{uniqueName}            </if>
+            <if
+                test="@Ognl@isNotBlank(description)">
+                and ECTABLE_COLUMN.DESCRIPTION = #{description}            </if>
+        </where>
+    </sql>
+
+    <select id="count" resultType="long">
+        select count(*) from ECTABLE_COLUMN
+        <include refid="ectableColumnDynamicWhere" />
+    </select>
+
+    <!--
+        分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+        因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect" resultMap="EctableColumnResult">
+        select
+        <include refid="ectableColumnColumns" />
+        from ECTABLE_COLUMN
+        <include refid="ectableColumnDynamicWhere" />
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+    <select id="findAll"
+        parameterType="com.uk.sec.framework.ectable.model.EctableColumn"
+        resultMap="EctableColumnResult">
+        select
+        <include refid="ectableColumnColumns" />
+        from ECTABLE_COLUMN
+        <include refid="ectableColumnDynamicWhere" />
+    </select>
+
+</mapper>

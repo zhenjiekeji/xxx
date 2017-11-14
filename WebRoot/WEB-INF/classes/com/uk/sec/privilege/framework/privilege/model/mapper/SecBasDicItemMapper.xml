@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="SecBasDicItem">
+
+    <resultMap id="SecBasDicItemResult"
+        type="com.uk.sec.privilege.framework.privilege.model.SecBasDicItem">
+        <result property="itemName" column="itemName"/>
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="secBasDicItemColumns">
+        <![CDATA[
+            SEC_BAS_DIC_ITEM.ITEM_ID as itemId,
+            SEC_BAS_DIC_ITEM.ITEM_NAME as itemName,
+            SEC_BAS_DIC_ITEM.ITEM_DESCRIPTION as itemDescription,
+            SEC_BAS_DIC_ITEM.GROUP_ID as groupId,
+            SEC_BAS_DIC_ITEM.DIC_ID as dicId,
+            SEC_BAS_DIC_ITEM.ITEM_FLAG as itemFlag,
+            SEC_BAS_DIC_ITEM.ITEM_ORDER as itemOrder
+        ]]>
+    </sql>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="secBasDicItemRelateColumns">
+        <![CDATA[
+            sbdi.ITEM_ID as itemId,
+            sbdi.ITEM_NAME as itemName,
+            sbdi.ITEM_DESCRIPTION as itemDescription,
+            sbdi.GROUP_ID as groupId,
+            sbdi.DIC_ID as dicId,
+            sbdi.ITEM_FLAG as itemFlag,
+            sbdi.ITEM_ORDER as itemOrder
+        ]]>
+    </sql>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="secBasDicItemRelateColumnsDistinct">
+        <![CDATA[
+            distinct sbdi.ITEM_ID as itemId,
+            sbdi.ITEM_NAME as itemName,
+            sbdi.ITEM_DESCRIPTION as itemDescription,
+            sbdi.GROUP_ID as groupId,
+            sbdi.DIC_ID as dicId,
+            sbdi.ITEM_FLAG as itemFlag,
+            sbdi.ITEM_ORDER as itemOrder
+        ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecBasDicItem">
+        <selectKey resultType="java.lang.String" order="BEFORE"
+            keyProperty="dicId">
+            SELECT sys_guid() AS DIC_ID FROM DUAL
+        </selectKey>
+        <![CDATA[
+        INSERT INTO
+        SEC_BAS_DIC_ITEM (
+            ITEM_ID ,
+            ITEM_NAME ,
+            ITEM_DESCRIPTION ,
+            GROUP_ID ,
+            DIC_ID ,
+            ITEM_FLAG,
+            ITEM_ORDER
+        ) VALUES (
+            #{itemId,jdbcType=DECIMAL} ,
+            #{itemName,jdbcType=VARCHAR} ,
+            #{itemDescription,jdbcType=VARCHAR} ,
+            #{groupId,jdbcType=VARCHAR} ,
+            #{dicId,jdbcType=VARCHAR} ,
+            #{itemFlag,jdbcType=DECIMAL},
+            #{itemOrder,jdbcType=DECIMAL}
+        )
+    ]]>
+        <!--
+            oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL
+            DB2: order="BEFORE"" values nextval for sequenceName
+            <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+            SELECT sequenceName.nextval AS ID FROM DUAL
+            </selectKey>
+        -->
+    </insert>
+
+    <update id="update"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecBasDicItem">
+        <![CDATA[
+        UPDATE SEC_BAS_DIC_ITEM SET
+            ITEM_ID = #{itemId,jdbcType=DECIMAL} ,
+            ITEM_NAME = #{itemName,jdbcType=VARCHAR} ,
+            ITEM_DESCRIPTION = #{itemDescription,jdbcType=VARCHAR} ,
+            GROUP_ID = #{groupId,jdbcType=VARCHAR} ,
+            ITEM_FLAG = #{itemFlag,jdbcType=DECIMAL},
+            ITEM_ORDER = #{itemOrder,jdbcType=DECIMAL}
+        WHERE
+            DIC_ID = #{dicId}
+    ]]>
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        <![CDATA[
+        delete from SEC_BAS_DIC_ITEM where
+        DIC_ID = #{id}
+    ]]>
+    </delete>
+
+    <select id="getById" parameterType="java.lang.String"
+        resultMap="SecBasDicItemResult">
+        select
+        <include refid="secBasDicItemColumns" />
+        <![CDATA[
+            from SEC_BAS_DIC_ITEM
+            where
+                DIC_ID = #{id}
+        ]]>
+    </select>
+
+    <sql id="secBasDicItemDynamicWhere">
+        <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+        <where>
+            SEC_BAS_DIC_ITEM.ITEM_FLAG=1
+            <if
+                test="@Ognl@isNotBlank(itemId)">
+                and SEC_BAS_DIC_ITEM.ITEM_ID = #{itemId}            </if>
+            <if
+                test="@Ognl@isNotBlank(itemName)">
+                and SEC_BAS_DIC_ITEM.ITEM_NAME like #{itemName,javaType=Like,jdbcType=VARCHAR} escape '\'            </if>
+            <if
+                test="@Ognl@isNotBlank(itemDescription)">
+                and SEC_BAS_DIC_ITEM.ITEM_DESCRIPTION = #{itemDescription}            </if>
+            <if
+                test="@Ognl@isNotBlank(groupId)">
+                and SEC_BAS_DIC_ITEM.GROUP_ID = #{groupId}            </if>
+            <if
+                test="@Ognl@isNotBlank(dicId)">
+                and SEC_BAS_DIC_ITEM.DIC_ID = #{dicId}            </if>
+            <if
+                test="@Ognl@isNotBlank(itemOrder)">
+                and SEC_BAS_DIC_ITEM.ITEM_ORDER = #{itemOrder}            </if>
+
+        </where>
+    </sql>
+
+    <select id="count" resultType="long">
+        select count(*) from SEC_BAS_DIC_ITEM
+        <include refid="secBasDicItemDynamicWhere" />
+    </select>
+
+    <!--
+        分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+        因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect" resultMap="SecBasDicItemResult">
+        select
+        <include refid="secBasDicItemColumns" />
+        from SEC_BAS_DIC_ITEM
+        <include refid="secBasDicItemDynamicWhere" />
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+    <select id="findAll"
+        parameterType="com.uk.sec.privilege.framework.privilege.model.SecBasDicItem"
+        resultMap="SecBasDicItemResult">
+        select
+        <include refid="secBasDicItemColumns" />
+        from SEC_BAS_DIC_ITEM
+        <include refid="secBasDicItemDynamicWhere" />
+    </select>
+
+    <select id="findAllByMap"
+        resultMap="SecBasDicItemResult">
+        select
+        <include refid="secBasDicItemColumns" />
+        from SEC_BAS_DIC_ITEM
+        <include refid="secBasDicItemDynamicWhere" />
+    </select>
+
+  <!-- 查询相应的字典组下所有的字典项 -->
+   <select id="selectDicItemListByGroupId" parameterType="java.lang.String" resultMap="SecBasDicItemResult">
+        select
+        <include refid="secBasDicItemColumns" />
+        from SEC_BAS_DIC_ITEM
+        where GROUP_ID = #{groupId,jdbcType=VARCHAR}
+       	and ITEM_FLAG=1
+        order by ITEM_ORDER
+  </select>
+
+  <!-- 根据groupId,orderColumn,查询出List<SecBasDicItem> -->
+   <select id="selectDicItemByGroupIdAndOrder" parameterType="java.util.Map" resultMap="SecBasDicItemResult">
+        select
+        <include refid="secBasDicItemColumns" />
+        from SEC_BAS_DIC_ITEM
+        <include refid="secBasDicItemDynamicWhere" />
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>        
+  </select>
+
+
+  <!-- 根据menuId,查询出List<SecBasDicItem> -->
+   <select id="selectOperationByMenuId" parameterType="java.util.Map" resultMap="SecBasDicItemResult">
+        select
+        <include refid="secBasDicItemRelateColumns" />
+        from SEC_BAS_DIC_ITEM sbdi,SEC_PRIVILEGE_MENU_OPER spmo
+        where spmo.MENU_ID = #{menuId,jdbcType=VARCHAR}
+        and sbdi.GROUP_ID = #{groupId,jdbcType=VARCHAR}
+        and sbdi.ITEM_ID = spmo.OPERATION_ID
+       	and sbdi.ITEM_FLAG=1
+        order by sbdi.ITEM_ORDER
+  </select>
+
+  <!-- 根据roleId,menuId,查询出List<SecBasDicItem> -->
+   <select id="selectOperationByRoleIdMenuId" parameterType="java.util.Map" resultMap="SecBasDicItemResult">
+        select
+        <include refid="secBasDicItemRelateColumns" />
+        from SEC_BAS_DIC_ITEM sbdi,SEC_PRIVILEGE_ROLE_MENU_OPER sprmo
+        where sprmo.ROLE_ID = #{roleId,jdbcType=VARCHAR}
+        and sprmo.MENU_ID = #{menuId,jdbcType=VARCHAR}
+        and sbdi.GROUP_ID = #{groupId,jdbcType=VARCHAR}
+        and sbdi.ITEM_ID = sprmo.OPERATION_ID
+       	and sbdi.ITEM_FLAG=1
+        order by sbdi.ITEM_ORDER
+  </select>
+
+  <!-- 根据loginId,menuId,查询出List<SecBasDicItem> -->
+   <select id="selectOperationByLoginIdMenuId" parameterType="java.util.Map" resultMap="SecBasDicItemResult">
+        select
+        <include refid="secBasDicItemRelateColumnsDistinct" />
+        from SEC_BAS_DIC_ITEM sbdi,SEC_PRIVILEGE_ROLE_MENU_OPER sprmo,SEC_PRIVILEGE_USER_ROLE spur
+        where spur.LOGIN_ID = #{loginId,jdbcType=VARCHAR}
+        and sprmo.MENU_ID = #{menuId,jdbcType=VARCHAR}
+        and sbdi.GROUP_ID = #{groupId,jdbcType=VARCHAR}
+        and	spur.ROLE_ID = sprmo.ROLE_ID
+        and sbdi.ITEM_ID = sprmo.OPERATION_ID
+       	and sbdi.ITEM_FLAG=1
+        order by sbdi.ITEM_ORDER
+  </select>
+
+<!-- 返回字典项中最大的排序号和ItemId -->
+    <select id="findMaxItemOrder" parameterType="com.uk.sec.privilege.framework.privilege.model.SecBasDicItem"
+    	resultType="java.lang.Long">
+        select max(ITEM_ORDER)
+        from SEC_BAS_DIC_ITEM
+        where ITEM_FLAG=1
+		and GROUP_ID = #{groupId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findMaxItemId" parameterType="com.uk.sec.privilege.framework.privilege.model.SecBasDicItem"
+    	resultType="java.lang.Long">
+        select max(ITEM_ID)
+        from SEC_BAS_DIC_ITEM
+        where ITEM_FLAG=1
+        and GROUP_ID = #{groupId,jdbcType=VARCHAR}
+    </select>
+
+<!-- 返回字典项中最小的排序号 -->
+    <select id="findMinItemOrder" parameterType="com.uk.sec.privilege.framework.privilege.model.SecBasDicItem"
+    	resultType="java.lang.Long">
+        select min(ITEM_ORDER)
+        from SEC_BAS_DIC_ITEM
+        where ITEM_FLAG=1
+		and GROUP_ID = #{groupId,jdbcType=VARCHAR}
+    </select>
+
+<!-- 下移字典项-->
+    <select id="orderDown" statementType="CALLABLE" parameterType="com.uk.sec.privilege.framework.privilege.model.SecBasDicItem">
+    	{call shift_dic_item_order_down(#{dicId,mode=IN,jdbcType=VARCHAR}
+    	,#{groupId,mode=IN,jdbcType=VARCHAR}
+    	)}
+    </select>
+
+<!-- 上移字典项-->
+    <select id="orderUp" statementType="CALLABLE" parameterType="com.uk.sec.privilege.framework.privilege.model.SecBasDicItem">
+    	{call shift_dic_item_order_up(#{dicId,mode=IN,jdbcType=VARCHAR}
+    	,#{groupId,mode=IN,jdbcType=VARCHAR}
+    	)}
+    </select>
+
+</mapper>

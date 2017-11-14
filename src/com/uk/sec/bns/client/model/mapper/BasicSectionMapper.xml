@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="BasicSection">
+
+    <resultMap id="BasicSectionResult"
+        type="com.uk.sec.bns.client.model.BasicSection">
+        <result property="pkId" column="pkId"/>
+        <result property="oldCode" column="oldCode"/>
+        <result property="seCode" column="seCode"/>
+        <result property="seTollroadCode" column="seTollroadCode"/>
+        <result property="seTollroadname" column="seTollroadname"/>
+        <result property="seNum" column="seNum"/>
+        <result property="seReservednum" column="seReservednum"/>
+        <result property="seName" column="seName"/>
+        <result property="seType" column="seType"/>
+        <result property="seLength" column="seLength"/>
+        <result property="seStartsite" column="seStartsite"/>
+        <result property="seStartlng" column="seStartlng"/>
+        <result property="seStartlat" column="seStartlat"/>
+        <result property="seStartstakenum" column="seStartstakenum"/>
+        <result property="seEndsite" column="seEndsite"/>
+        <result property="seEndlng" column="seEndlng"/>
+        <result property="seEndlat" column="seEndlat"/>
+        <result property="seEndstakenum" column="seEndstakenum"/>
+        <result property="seTax" column="seTax"/>
+        <result property="seTaxrate" column="seTaxrate"/>
+        <result property="seSectionownerCode" column="seSectionownerCode"/>
+        <result property="seSectionownerId" column="seSectionownerId"/>
+        <result property="seChargetype" column="seChargetype"/>
+        <result property="seTollroads" column="seTollroads"/>
+        <result property="seBuilttime" column="seBuilttime"/>
+        <result property="seStarttime" column="seStarttime"/>
+        <result property="seEndtime" column="seEndtime"/>
+        <result property="seOldRoadno" column="seOldRoadno"/>
+        <result property="ivPrePkid" column="ivPrePkid"/>
+        <result property="ivCurrentflag" column="ivCurrentflag"/>
+        <result property="ivOperate" column="ivOperate"/>
+        <result property="ivOperator" column="ivOperator"/>
+        <result property="ivOperatetime" column="ivOperatetime"/>
+        <result property="ivReviewstatus" column="ivReviewstatus"/>
+        <result property="ivReviewstatustime" column="ivReviewstatustime"/>
+        <result property="ivReviewer1" column="ivReviewer1"/>
+        <result property="ivReview1time" column="ivReview1time"/>
+        <result property="ivReviewer2" column="ivReviewer2"/>
+        <result property="ivReview2time" column="ivReview2time"/>
+        <result property="remarks" column="remarks"/>
+        <result property="flag" column="flag"/>
+        <result property="menuId" column="menuId"/>
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="basicSectionColumns">
+        <![CDATA[
+            basic_section.pk_id as pkId,
+            basic_section.old_Code as oldCode,
+            basic_section.se_Code as seCode,
+            basic_section.se_tollroadCode as seTollroadCode,
+            basic_section.se_tollroadname as seTollroadname,
+            basic_section.se_num as seNum,
+            basic_section.se_reservednum as seReservednum,
+            basic_section.se_name as seName,
+            basic_section.se_type as seType,
+            basic_section.se_length as seLength,
+            basic_section.se_startsite as seStartsite,
+            basic_section.se_startlng as seStartlng,
+            basic_section.se_startlat as seStartlat,
+            basic_section.se_startstakenum as seStartstakenum,
+            basic_section.se_endsite as seEndsite,
+            basic_section.se_endlng as seEndlng,
+            basic_section.se_endlat as seEndlat,
+            basic_section.se_endstakenum as seEndstakenum,
+            basic_section.se_tax as seTax,
+            basic_section.se_taxrate as seTaxrate,
+            basic_section.se_sectionownerCode as seSectionownerCode,
+            basic_section.se_sectionownerId as seSectionownerId,
+            basic_section.se_chargetype as seChargetype,
+            basic_section.se_tollroads as seTollroads,
+            basic_section.se_builttime as seBuilttime,
+            basic_section.se_starttime as seStarttime,
+            basic_section.se_endtime as seEndtime,
+            basic_section.se_old_roadno as seOldRoadno,
+            basic_section.iv_pre_pkid as ivPrePkid,
+            basic_section.iv_currentflag as ivCurrentflag,
+            basic_section.iv_operate as ivOperate,
+            basic_section.iv_operator as ivOperator,
+            basic_section.iv_operatetime as ivOperatetime,
+            basic_section.iv_reviewstatus as ivReviewstatus,
+            basic_section.iv_reviewstatustime as ivReviewstatustime,
+            basic_section.iv_reviewer1 as ivReviewer1,
+            basic_section.iv_review1time as ivReview1time,
+            basic_section.iv_reviewer2 as ivReviewer2,
+            basic_section.iv_review2time as ivReview2time,
+            basic_section.remarks as remarks,
+            basic_section.flag as flag,
+            basic_section.menu_id as menuId
+        ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert"
+        parameterType="com.uk.sec.bns.client.model.BasicSection">
+        <selectKey resultType="java.lang.String" order="BEFORE"
+            keyProperty="pkId">
+            SELECT sys_guid() AS ID FROM DUAL
+        </selectKey>
+        <![CDATA[
+        INSERT INTO
+        basic_section (
+            pk_id ,
+            old_Code ,
+            se_Code ,
+            se_tollroadCode ,
+            se_tollroadname ,
+            se_num ,
+            se_reservednum ,
+            se_name ,
+            se_type ,
+            se_length ,
+            se_startsite ,
+            se_startlng ,
+            se_startlat ,
+            se_startstakenum ,
+            se_endsite ,
+            se_endlng ,
+            se_endlat ,
+            se_endstakenum ,
+            se_tax ,
+            se_taxrate ,
+            se_sectionownerCode ,
+            se_sectionownerId,
+            se_chargetype ,
+            se_tollroads ,
+            se_builttime ,
+            se_starttime ,
+            se_endtime ,
+            se_old_roadno ,
+            iv_pre_pkid ,
+            iv_currentflag ,
+            iv_operate ,
+            iv_operator ,
+            iv_operatetime ,
+            iv_reviewstatus ,
+            iv_reviewstatustime ,
+            iv_reviewer1 ,
+            iv_review1time ,
+            iv_reviewer2 ,
+            iv_review2time ,
+            remarks,
+            flag,
+            menu_id 
+        ) VALUES (
+            #{pkId,jdbcType=VARCHAR} ,
+            #{oldCode,jdbcType=VARCHAR} ,
+            #{seCode,jdbcType=VARCHAR} ,
+            #{seTollroadCode,jdbcType=VARCHAR} ,
+            #{seTollroadname,jdbcType=VARCHAR} ,
+            #{seNum,jdbcType=VARCHAR} ,
+            #{seReservednum,jdbcType=VARCHAR} ,
+            #{seName,jdbcType=VARCHAR} ,
+            #{seType,jdbcType=INTEGER} ,
+            #{seLength,jdbcType=INTEGER} ,
+            #{seStartsite,jdbcType=VARCHAR} ,
+            #{seStartlng,jdbcType=VARCHAR} ,
+            #{seStartlat,jdbcType=VARCHAR} ,
+            #{seStartstakenum,jdbcType=VARCHAR} ,
+            #{seEndsite,jdbcType=VARCHAR} ,
+            #{seEndlng,jdbcType=VARCHAR} ,
+            #{seEndlat,jdbcType=VARCHAR} ,
+            #{seEndstakenum,jdbcType=VARCHAR} ,
+            #{seTax,jdbcType=INTEGER} ,
+            #{seTaxrate,jdbcType=INTEGER} ,
+            #{seSectionownerCode,jdbcType=VARCHAR} ,
+            #{seSectionownerId,jdbcType=VARCHAR} ,
+            #{seChargetype,jdbcType=INTEGER} ,
+            #{seTollroads,jdbcType=VARCHAR} ,
+            #{seBuilttime,jdbcType=VARCHAR} ,
+            #{seStarttime,jdbcType=VARCHAR} ,
+            #{seEndtime,jdbcType=VARCHAR} ,
+            #{seOldRoadno,jdbcType=VARCHAR} ,
+            #{ivPrePkid,jdbcType=INTEGER} ,
+            #{ivCurrentflag,jdbcType=INTEGER} ,
+            #{ivOperate,jdbcType=INTEGER} ,
+            #{ivOperator,jdbcType=INTEGER} ,
+            #{ivOperatetime,jdbcType=DATE} ,
+            #{ivReviewstatus,jdbcType=INTEGER} ,
+            #{ivReviewstatustime,jdbcType=DATE} ,
+            #{ivReviewer1,jdbcType=VARCHAR} ,
+            #{ivReview1time,jdbcType=DATE} ,
+            #{ivReviewer2,jdbcType=VARCHAR} ,
+            #{ivReview2time,jdbcType=DATE} ,
+            #{remarks,jdbcType=VARCHAR},
+            #{flag, jdbcType=DECIMAL},
+            #{menuId,jdbcType=VARCHAR}  
+        )
+    ]]>
+        <!--
+            oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL
+            DB2: order="BEFORE"" values nextval for sequenceName
+            <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+            SELECT sequenceName.nextval AS ID FROM DUAL
+            </selectKey>
+        -->
+    </insert>
+
+    <update id="update"
+        parameterType="com.uk.sec.bns.client.model.BasicSection">
+        <![CDATA[
+        UPDATE basic_section SET
+            old_Code = #{oldCode,jdbcType=VARCHAR} ,
+            se_Code = #{seCode,jdbcType=VARCHAR} ,
+            se_tollroadCode = #{seTollroadCode,jdbcType=VARCHAR} ,
+            se_tollroadname = #{seTollroadname,jdbcType=VARCHAR} ,
+            se_num = #{seNum,jdbcType=VARCHAR} ,
+            se_reservednum = #{seReservednum,jdbcType=VARCHAR} ,
+            se_name = #{seName,jdbcType=VARCHAR} ,
+            se_type = #{seType,jdbcType=INTEGER} ,
+            se_length = #{seLength,jdbcType=INTEGER} ,
+            se_startsite = #{seStartsite,jdbcType=VARCHAR} ,
+            se_startlng = #{seStartlng,jdbcType=VARCHAR} ,
+            se_startlat = #{seStartlat,jdbcType=VARCHAR} ,
+            se_startstakenum = #{seStartstakenum,jdbcType=VARCHAR} ,
+            se_endsite = #{seEndsite,jdbcType=VARCHAR} ,
+            se_endlng = #{seEndlng,jdbcType=VARCHAR} ,
+            se_endlat = #{seEndlat,jdbcType=VARCHAR} ,
+            se_endstakenum = #{seEndstakenum,jdbcType=VARCHAR} ,
+            se_tax = #{seTax,jdbcType=INTEGER} ,
+            se_taxrate = #{seTaxrate,jdbcType=INTEGER} ,
+            se_sectionownerCode = #{seSectionownerCode,jdbcType=VARCHAR} ,
+            se_sectionownerId = #{seSectionownerId,jdbcType=VARCHAR} ,
+            se_chargetype = #{seChargetype,jdbcType=INTEGER} ,
+            se_tollroads = #{seTollroads,jdbcType=VARCHAR} ,
+            se_builttime = #{seBuilttime,jdbcType=VARCHAR} ,
+            se_starttime = #{seStarttime,jdbcType=VARCHAR} ,
+            se_endtime = #{seEndtime,jdbcType=VARCHAR} ,
+            se_old_roadno = #{seOldRoadno,jdbcType=VARCHAR} ,
+            iv_pre_pkid = #{ivPrePkid,jdbcType=INTEGER} ,
+            iv_currentflag = #{ivCurrentflag,jdbcType=INTEGER} ,
+            iv_operate = #{ivOperate,jdbcType=INTEGER} ,
+            iv_operator = #{ivOperator,jdbcType=INTEGER} ,
+            iv_operatetime = #{ivOperatetime,jdbcType=DATE} ,
+            iv_reviewstatus = #{ivReviewstatus,jdbcType=INTEGER} ,
+            iv_reviewstatustime = #{ivReviewstatustime,jdbcType=DATE} ,
+            iv_reviewer1 = #{ivReviewer1,jdbcType=VARCHAR} ,
+            iv_review1time = #{ivReview1time,jdbcType=DATE} ,
+            iv_reviewer2 = #{ivReviewer2,jdbcType=VARCHAR} ,
+            iv_review2time = #{ivReview2time,jdbcType=DATE} ,
+            remarks = #{remarks,jdbcType=VARCHAR},
+            flag =  #{flag, jdbcType=DECIMAL},
+            menu_id = #{menuId,jdbcType=VARCHAR}  
+        WHERE
+            pk_id = #{pkId} 
+    ]]>
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        <![CDATA[
+        delete from basic_section where
+        pk_id = #{pkId} 
+    ]]>
+    </delete>
+
+    <select id="getById" parameterType="java.lang.String"
+        resultMap="BasicSectionResult">
+        select
+        <include refid="basicSectionColumns" />
+        <![CDATA[
+            from basic_section
+            where
+                pk_id = #{pkId} 
+        ]]>
+    </select>
+
+    <sql id="basicSectionDynamicWhere">
+        <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+        <where>
+            <if
+                test="@Ognl@isNotBlank(pkId)">
+                and basic_section.pk_id = #{pkId}            </if>
+            <if
+                test="@Ognl@isNotBlank(oldCode)">
+                and basic_section.old_Code = #{oldCode}            </if>
+            <if
+                test="@Ognl@isNotBlank(seCode)">
+                and basic_section.se_Code = #{seCode}            </if>
+            <if
+                test="@Ognl@isNotBlank(seTollroadCode)">
+                and basic_section.se_tollroadCode = #{seTollroadCode}            </if>
+            <if
+                test="@Ognl@isNotBlank(seTollroadname)">
+                and basic_section.se_tollroadname = #{seTollroadname}            </if>
+            <if
+                test="@Ognl@isNotBlank(seNum)">
+                and basic_section.se_num = #{seNum}            </if>
+            <if
+                test="@Ognl@isNotBlank(seReservednum)">
+                and basic_section.se_reservednum = #{seReservednum}            </if>
+            <if
+                test="@Ognl@isNotBlank(seName)">
+                and basic_section.se_name = #{seName}            </if>
+            <if
+                test="@Ognl@isNotBlank(seType)">
+                and basic_section.se_type = #{seType}            </if>
+            <if
+                test="@Ognl@isNotBlank(seLength)">
+                and basic_section.se_length = #{seLength}            </if>
+            <if
+                test="@Ognl@isNotBlank(seStartsite)">
+                and basic_section.se_startsite = #{seStartsite}            </if>
+            <if
+                test="@Ognl@isNotBlank(seStartlng)">
+                and basic_section.se_startlng = #{seStartlng}            </if>
+            <if
+                test="@Ognl@isNotBlank(seStartlat)">
+                and basic_section.se_startlat = #{seStartlat}            </if>
+            <if
+                test="@Ognl@isNotBlank(seStartstakenum)">
+                and basic_section.se_startstakenum = #{seStartstakenum}            </if>
+            <if
+                test="@Ognl@isNotBlank(seEndsite)">
+                and basic_section.se_endsite = #{seEndsite}            </if>
+            <if
+                test="@Ognl@isNotBlank(seEndlng)">
+                and basic_section.se_endlng = #{seEndlng}            </if>
+            <if
+                test="@Ognl@isNotBlank(seEndlat)">
+                and basic_section.se_endlat = #{seEndlat}            </if>
+            <if
+                test="@Ognl@isNotBlank(seEndstakenum)">
+                and basic_section.se_endstakenum = #{seEndstakenum}            </if>
+            <if
+                test="@Ognl@isNotBlank(seTax)">
+                and basic_section.se_tax = #{seTax}            </if>
+            <if
+                test="@Ognl@isNotBlank(seTaxrate)">
+                and basic_section.se_taxrate = #{seTaxrate}            </if>
+            <if
+                test="@Ognl@isNotBlank(seSectionownerCode)">
+                and basic_section.se_sectionownerCode = #{seSectionownerCode}            </if>
+            <if
+                test="@Ognl@isNotBlank(seSectionownerId)">
+                and basic_section.se_sectionownerId = #{seSectionownerId}            </if>
+            <if
+                test="@Ognl@isNotBlank(seChargetype)">
+                and basic_section.se_chargetype = #{seChargetype}            </if>
+            <if
+                test="@Ognl@isNotBlank(seTollroads)">
+                and basic_section.se_tollroads = #{seTollroads}            </if>
+            <if
+                test="@Ognl@isNotBlank(seBuilttime)">
+                and basic_section.se_builttime = #{seBuilttime}            </if>
+            <if
+                test="@Ognl@isNotBlank(seStarttime)">
+                and basic_section.se_starttime = #{seStarttime}            </if>
+            <if
+                test="@Ognl@isNotBlank(seEndtime)">
+                and basic_section.se_endtime = #{seEndtime}            </if>
+            <if
+                test="@Ognl@isNotBlank(seOldRoadno)">
+                and basic_section.se_old_roadno = #{seOldRoadno}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivPrePkid)">
+                and basic_section.iv_pre_pkid = #{ivPrePkid}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivCurrentflag)">
+                and basic_section.iv_currentflag = #{ivCurrentflag}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivOperate)">
+                and basic_section.iv_operate = #{ivOperate}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivOperator)">
+                and basic_section.iv_operator = #{ivOperator}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivOperatetime)">
+                and basic_section.iv_operatetime = #{ivOperatetime}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivReviewstatus)">
+                and basic_section.iv_reviewstatus = #{ivReviewstatus}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivReviewstatustime)">
+                and basic_section.iv_reviewstatustime = #{ivReviewstatustime}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivReviewer1)">
+                and basic_section.iv_reviewer1 = #{ivReviewer1}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivReview1time)">
+                and basic_section.iv_review1time = #{ivReview1time}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivReviewer2)">
+                and basic_section.iv_reviewer2 = #{ivReviewer2}            </if>
+            <if
+                test="@Ognl@isNotBlank(ivReview2time)">
+                and basic_section.iv_review2time = #{ivReview2time}            </if>
+            <if
+                test="@Ognl@isNotBlank(remarks)">
+                and basic_section.remarks = #{remarks}            </if>
+            <if
+                test="@Ognl@isNotBlank(menuId)">
+                and basic_section.menu_id = #{menuId}            </if>
+            <if
+                test="@Ognl@isNotBlank(flag)">
+                and basic_section.flag = #{flag}            </if>
+        </where>
+    </sql>
+
+    <select id="count" resultType="long">
+        select count(*) from basic_section
+        <include refid="basicSectionDynamicWhere" />
+    </select>
+
+    <!--
+        分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+        因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect" resultMap="BasicSectionResult">
+        select
+        <include refid="basicSectionColumns" />
+        from basic_section
+        <include refid="basicSectionDynamicWhere" />
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+                                                                                  
+
+    <select id="findAll"
+        parameterType="com.uk.sec.bns.client.model.BasicSection"
+        resultMap="BasicSectionResult">
+        select
+        <include refid="basicSectionColumns" />
+        from basic_section
+        <include refid="basicSectionDynamicWhere" />
+    </select>
+
+</mapper>

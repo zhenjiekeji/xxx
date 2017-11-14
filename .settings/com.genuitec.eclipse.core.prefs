@@ -1,0 +1,4 @@
+#Wed Jan 14 10:10:37 CST 2015
+eclipse.preferences.version=1
+validator.Checked=WebRoot/scripts/DataTables-1.9.3/src/core/core.constructor.js,WebRoot/bns/plan/js/Chart.js,WebRoot/scripts/DataTables-1.9.3/extras/AutoFill/inputs.html
+validator.Unchecked=

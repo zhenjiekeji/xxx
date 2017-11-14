@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="BasicTemptollbooth">
+
+    <resultMap id="BasicTemptollboothResult"
+        type="com.uk.sec.bns.client.model.BasicTemptollbooth">
+        <result property="pkId" column="pkId"/>
+        <result property="ttbId" column="ttbId"/>
+        <result property="ttbSectionPkid" column="ttbSectionPkid"/>
+        <result property="ttbSectionid" column="ttbSectionid"/>
+        <result property="ttbNum" column="ttbNum"/>
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="basicTemptollboothColumns">
+        <![CDATA[
+            basic_temptollbooth.pk_id as pkId,
+            basic_temptollbooth.ttb_id as ttbId,
+            basic_temptollbooth.ttb_section_pkid as ttbSectionPkid,
+            basic_temptollbooth.ttb_sectionid as ttbSectionid,
+            basic_temptollbooth.ttb_num as ttbNum
+        ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert"
+        parameterType="com.uk.sec.bns.client.model.BasicTemptollbooth">
+        <selectKey resultType="java.lang.String" order="BEFORE"
+            keyProperty="id">
+            SELECT sys_guid() AS ID FROM DUAL
+        </selectKey>
+        <![CDATA[
+        INSERT INTO
+        basic_temptollbooth (
+            pk_id ,
+            ttb_id ,
+            ttb_section_pkid ,
+            ttb_sectionid ,
+            ttb_num 
+        ) VALUES (
+            #{pkId,jdbcType=VARCHAR} ,
+            #{ttbId,jdbcType=VARCHAR} ,
+            #{ttbSectionPkid,jdbcType=VARCHAR} ,
+            #{ttbSectionid,jdbcType=VARCHAR} ,
+            #{ttbNum,jdbcType=VARCHAR} 
+        )
+    ]]>
+        <!--
+            oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL
+            DB2: order="BEFORE"" values nextval for sequenceName
+            <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+            SELECT sequenceName.nextval AS ID FROM DUAL
+            </selectKey>
+        -->
+    </insert>
+
+    <update id="update"
+        parameterType="com.uk.sec.bns.client.model.BasicTemptollbooth">
+        <![CDATA[
+        UPDATE basic_temptollbooth SET
+            ttb_id = #{ttbId,jdbcType=VARCHAR} ,
+            ttb_section_pkid = #{ttbSectionPkid,jdbcType=VARCHAR} ,
+            ttb_sectionid = #{ttbSectionid,jdbcType=VARCHAR} ,
+            ttb_num = #{ttbNum,jdbcType=VARCHAR} 
+        WHERE
+            pk_id = #{pkId} 
+    ]]>
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        <![CDATA[
+        delete from basic_temptollbooth where
+        pk_id = #{id} 
+    ]]>
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Integer"
+        resultMap="BasicTemptollboothResult">
+        select
+        <include refid="basicTemptollboothColumns" />
+        <![CDATA[
+            from basic_temptollbooth
+            where
+                pk_id = #{id} 
+        ]]>
+    </select>
+
+    <sql id="basicTemptollboothDynamicWhere">
+        <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+        <where>
+            <if
+                test="@Ognl@isNotBlank(pkId)">
+                and basic_temptollbooth.pk_id = #{pkId}            </if>
+            <if
+                test="@Ognl@isNotBlank(ttbId)">
+                and basic_temptollbooth.ttb_id = #{ttbId}            </if>
+            <if
+                test="@Ognl@isNotBlank(ttbSectionPkid)">
+                and basic_temptollbooth.ttb_section_pkid = #{ttbSectionPkid}            </if>
+            <if
+                test="@Ognl@isNotBlank(ttbSectionid)">
+                and basic_temptollbooth.ttb_sectionid = #{ttbSectionid}            </if>
+            <if
+                test="@Ognl@isNotBlank(ttbNum)">
+                and basic_temptollbooth.ttb_num = #{ttbNum}            </if>
+        </where>
+    </sql>
+
+    <select id="count" resultType="long">
+        select count(*) from basic_temptollbooth
+        <include refid="basicTemptollboothDynamicWhere" />
+    </select>
+
+    <!--
+        分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+        因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect" resultMap="BasicTemptollboothResult">
+        select
+        <include refid="basicTemptollboothColumns" />
+        from basic_temptollbooth
+        <include refid="basicTemptollboothDynamicWhere" />
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+              
+
+    <select id="findAll"
+        parameterType="com.uk.sec.bns.client.model.BasicTemptollbooth"
+        resultMap="BasicTemptollboothResult">
+        select
+        <include refid="basicTemptollboothColumns" />
+        from basic_temptollbooth
+        <include refid="basicTemptollboothDynamicWhere" />
+    </select>
+
+</mapper>

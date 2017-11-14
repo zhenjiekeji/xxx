@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="BasicLinkowner">
+
+    <resultMap id="BasicLinkownerResult"
+        type="com.uk.sec.bns.client.model.BasicLinkowner">
+        <result property="pkId" column="pkId"/>
+        <result property="oldCode" column="oldCode"/>
+        <result property="loCode" column="loCode"/>
+        <result property="loProvinceCode" column="loProvinceCode"/>
+        <result property="loParties" column="loParties"/>
+        <result property="loNum" column="loNum"/>
+        <result property="loName" column="loName"/>
+        <result property="loContact" column="loContact"/>
+        <result property="loTel" column="loTel"/>
+        <result property="loAddress" column="loAddress"/>
+        <result property="loBank" column="loBank"/>
+        <result property="loBankadd" column="loBankadd"/>
+        <result property="loBankaccount" column="loBankaccount"/>
+        <result property="loTaxpayerCodeentification" column="loTaxpayerCodeentification"/>
+        <result property="loCreditcode" column="loCreditcode"/>
+        <result property="loRepresentative" column="loRepresentative"/>
+        <result property="remarks" column="remarks"/>
+        <result property="flag" column="flag"/>
+        <result property="menuId" column="menuId"/>
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="basicLinkownerColumns">
+        <![CDATA[
+            basic_linkowner.pk_id as pkId,
+            basic_linkowner.old_code as oldCode,
+            basic_linkowner.lo_code as loCode,
+            basic_linkowner.lo_id as loId,
+            basic_linkowner.lo_provinceCode as loProvinceCode,
+            basic_linkowner.lo_parties as loParties,
+            basic_linkowner.lo_num as loNum,
+            basic_linkowner.lo_name as loName,
+            basic_linkowner.lo_contact as loContact,
+            basic_linkowner.lo_tel as loTel,
+            basic_linkowner.lo_address as loAddress,
+            basic_linkowner.lo_bank as loBank,
+            basic_linkowner.lo_bankadd as loBankadd,
+            basic_linkowner.lo_bankaccount as loBankaccount,
+            basic_linkowner.lo_taxpayerCodeentification as loTaxpayerCodeentification,
+            basic_linkowner.lo_creditcode as loCreditcode,
+            basic_linkowner.lo_representative as loRepresentative,
+            basic_linkowner.remarks as remarks,
+            basic_linkowner.flag as flag,
+            basic_linkowner.menu_id as menuId
+        ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert"
+        parameterType="com.uk.sec.bns.client.model.BasicLinkowner">
+        <selectKey resultType="java.lang.String" order="BEFORE"
+            keyProperty="pkId">  
+      		SELECT sys_guid() AS ID FROM DUAL
+        </selectKey>
+        <![CDATA[
+        INSERT INTO
+        basic_linkowner (
+            pk_id ,
+            old_code ,
+            lo_code ,
+            lo_id,
+            lo_provinceCode ,
+            lo_parties ,
+            lo_num ,
+            lo_name ,
+            lo_contact ,
+            lo_tel ,
+            lo_address ,
+            lo_bank ,
+            lo_bankadd ,
+            lo_bankaccount ,
+            lo_taxpayerCodeentification ,
+            lo_creditcode ,
+            lo_representative,
+            remarks,
+            flag,
+            menu_id 
+        ) VALUES (
+            #{pkId,jdbcType=VARCHAR} ,
+            #{oldCode,jdbcType=VARCHAR} ,
+            #{loCode,jdbcType=VARCHAR} ,
+            #{loId,jdbcType=VARCHAR} ,
+            #{loProvinceCode,jdbcType=VARCHAR} ,
+            #{loParties,jdbcType=VARCHAR} ,
+            #{loNum,jdbcType=VARCHAR} ,
+            #{loName,jdbcType=VARCHAR} ,
+            #{loContact,jdbcType=VARCHAR} ,
+            #{loTel,jdbcType=VARCHAR} ,
+            #{loAddress,jdbcType=VARCHAR} ,
+            #{loBank,jdbcType=VARCHAR} ,
+            #{loBankadd,jdbcType=VARCHAR} ,
+            #{loBankaccount,jdbcType=VARCHAR} ,
+            #{loTaxpayerCodeentification,jdbcType=VARCHAR} ,
+            #{loCreditcode,jdbcType=VARCHAR} ,
+            #{loRepresentative,jdbcType=VARCHAR},
+            #{remarks,jdbcType=VARCHAR},
+            #{flag, jdbcType=DECIMAL},
+            #{menuId,jdbcType=VARCHAR} 
+        )
+    ]]>
+        <!--
+            oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL
+            DB2: order="BEFORE"" values nextval for sequenceName
+            <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+            SELECT sequenceName.nextval AS ID FROM DUAL
+            </selectKey>
+        -->
+    </insert>
+
+    <update id="update"
+        parameterType="com.uk.sec.bns.client.model.BasicLinkowner">
+        <![CDATA[
+        UPDATE basic_linkowner SET
+            old_code = #{oldCode,jdbcType=VARCHAR} ,
+            lo_code = #{loCode,jdbcType=VARCHAR} ,
+            lo_id = #{loId,jdbcType=VARCHAR} ,
+            lo_provinceCode = #{loProvinceCode,jdbcType=VARCHAR} ,
+            lo_parties = #{loParties,jdbcType=VARCHAR} ,
+            lo_num = #{loNum,jdbcType=VARCHAR} ,
+            lo_name = #{loName,jdbcType=VARCHAR} ,
+            lo_contact = #{loContact,jdbcType=VARCHAR} ,
+            lo_tel = #{loTel,jdbcType=VARCHAR} ,
+            lo_address = #{loAddress,jdbcType=VARCHAR} ,
+            lo_bank = #{loBank,jdbcType=VARCHAR} ,
+            lo_bankadd = #{loBankadd,jdbcType=VARCHAR} ,
+            lo_bankaccount = #{loBankaccount,jdbcType=VARCHAR} ,
+            lo_taxpayerCodeentification = #{loTaxpayerCodeentification,jdbcType=VARCHAR} ,
+            lo_creditcode = #{loCreditcode,jdbcType=VARCHAR} ,
+            lo_representative = #{loRepresentative,jdbcType=VARCHAR},
+            remarks = #{remarks,jdbcType=VARCHAR},
+            flag =  #{flag, jdbcType=DECIMAL}
+        WHERE
+            pk_id = #{pkId} 
+    ]]>
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        <![CDATA[
+        delete from basic_linkowner where
+        pk_id = #{pkId} 
+    ]]>
+    </delete>
+
+    <select id="getById" parameterType="java.lang.String"
+        resultMap="BasicLinkownerResult">
+        select
+        <include refid="basicLinkownerColumns" />
+        <![CDATA[
+            from basic_linkowner
+            where
+                pk_id = #{pkId} 
+        ]]>
+    </select>
+
+    <sql id="basicLinkownerDynamicWhere">
+        <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+        <where>
+            <if
+                test="@Ognl@isNotBlank(pkId)">
+                and basic_linkowner.pk_id = #{pkId}            </if>
+            <if
+                test="@Ognl@isNotBlank(oldCode)">
+                and basic_linkowner.old_code = #{oldCode}            </if>
+            <if
+                test="@Ognl@isNotBlank(loCode)">
+                and basic_linkowner.lo_code = #{loCode}            </if>
+            <if
+                test="@Ognl@isNotBlank(loId)">
+                and basic_linkowner.lo_id = #{loId}            </if>
+            <if
+                test="@Ognl@isNotBlank(loProvinceCode)">
+                and basic_linkowner.lo_provinceCode = #{loProvinceCode}            </if>
+            <if
+                test="@Ognl@isNotBlank(loParties)">
+                and basic_linkowner.lo_parties = #{loParties}            </if>
+            <if
+                test="@Ognl@isNotBlank(loNum)">
+                and basic_linkowner.lo_num = #{loNum}            </if>
+            <if
+                test="@Ognl@isNotBlank(loName)">
+                and basic_linkowner.lo_name = #{loName}            </if>
+            <if
+                test="@Ognl@isNotBlank(loContact)">
+                and basic_linkowner.lo_contact = #{loContact}            </if>
+            <if
+                test="@Ognl@isNotBlank(loTel)">
+                and basic_linkowner.lo_tel = #{loTel}            </if>
+            <if
+                test="@Ognl@isNotBlank(loAddress)">
+                and basic_linkowner.lo_address = #{loAddress}            </if>
+            <if
+                test="@Ognl@isNotBlank(loBank)">
+                and basic_linkowner.lo_bank = #{loBank}            </if>
+            <if
+                test="@Ognl@isNotBlank(loBankadd)">
+                and basic_linkowner.lo_bankadd = #{loBankadd}            </if>
+            <if
+                test="@Ognl@isNotBlank(loBankaccount)">
+                and basic_linkowner.lo_bankaccount = #{loBankaccount}            </if>
+            <if
+                test="@Ognl@isNotBlank(loTaxpayerCodeentification)">
+                and basic_linkowner.lo_taxpayerCodeentification = #{loTaxpayerCodeentification}            </if>
+            <if
+                test="@Ognl@isNotBlank(loCreditcode)">
+                and basic_linkowner.lo_creditcode = #{loCreditcode}            </if>
+            <if
+                test="@Ognl@isNotBlank(loRepresentative)">
+                and basic_linkowner.lo_representative = #{loRepresentative}            </if>
+            <if
+                test="@Ognl@isNotBlank(menuId)">
+                and basic_linkowner.menu_id = #{menuId}            </if>
+            <if
+                test="@Ognl@isNotBlank(flag)">
+                and basic_linkowner.flag = #{flag}            </if>
+        </where>
+    </sql>
+
+    <select id="count" resultType="long">
+        select count(*) from basic_linkowner
+        <include refid="basicLinkownerDynamicWhere" />
+    </select>
+
+    <!--
+        分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+        因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect" resultMap="BasicLinkownerResult">
+        select
+        <include refid="basicLinkownerColumns" />
+        from basic_linkowner
+        <include refid="basicLinkownerDynamicWhere" />
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+                                    
+
+    <select id="findAll"
+        parameterType="com.uk.sec.bns.client.model.BasicLinkowner"
+        resultMap="BasicLinkownerResult">
+        select
+        <include refid="basicLinkownerColumns" />
+        from basic_linkowner
+        <include refid="basicLinkownerDynamicWhere" />
+    </select>
+
+</mapper>

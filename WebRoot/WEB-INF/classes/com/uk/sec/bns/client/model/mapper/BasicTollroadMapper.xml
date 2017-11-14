@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="BasicTollroad">
+
+    <resultMap id="BasicTollroadResult"
+        type="com.uk.sec.bns.client.model.BasicTollroad">
+        <result property="pkId" column="pkId"/>
+        <result property="trId" column="trId"/>
+        <result property="trRoadnum" column="trRoadnum"/>
+        <result property="trProvinceid" column="trProvinceid"/>
+        <result property="trName" column="trName"/>
+        <result property="trLevel" column="trLevel"/>
+        <result property="trStartsite" column="trStartsite"/>
+        <result property="trStartstakenum" column="trStartstakenum"/>
+        <result property="trStartlng" column="trStartlng"/>
+        <result property="trStartlat" column="trStartlat"/>
+        <result property="trStartstationid" column="trStartstationid"/>
+        <result property="trEndsite" column="trEndsite"/>
+        <result property="trEndstakenum" column="trEndstakenum"/>
+        <result property="trEndlng" column="trEndlng"/>
+        <result property="trEndlat" column="trEndlat"/>
+        <result property="trEndstationid" column="trEndstationid"/>
+        <result property="trSectionownerid" column="trSectionownerid"/>
+        <result property="trSectionownerCode" column="trSectionownerCode"/>
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="basicTollroadColumns">
+        <![CDATA[
+            basic_tollroad.pk_id as pkId,
+            basic_tollroad.tr_id as trId,
+            basic_tollroad.tr_roadnum as trRoadnum,
+            basic_tollroad.tr_provinceid as trProvinceid,
+            basic_tollroad.tr_name as trName,
+            basic_tollroad.tr_level as trLevel,
+            basic_tollroad.tr_startsite as trStartsite,
+            basic_tollroad.tr_startstakenum as trStartstakenum,
+            basic_tollroad.tr_startlng as trStartlng,
+            basic_tollroad.tr_startlat as trStartlat,
+            basic_tollroad.tr_startstationid as trStartstationid,
+            basic_tollroad.tr_endsite as trEndsite,
+            basic_tollroad.tr_endstakenum as trEndstakenum,
+            basic_tollroad.tr_endlng as trEndlng,
+            basic_tollroad.tr_endlat as trEndlat,
+            basic_tollroad.tr_endstationid as trEndstationid,
+            basic_tollroad.tr_sectionownerid as trSectionownerid,
+            basic_tollroad.tr_sectionownercode as trSectionownerCode
+        ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert"
+        parameterType="com.uk.sec.bns.client.model.BasicTollroad">
+        <selectKey resultType="java.lang.String" order="BEFORE"
+            keyProperty="pkId">
+            SELECT sys_guid() AS ID FROM DUAL
+        </selectKey>
+        <![CDATA[
+        INSERT INTO
+        basic_tollroad (
+            pk_id ,
+            tr_id ,
+            tr_roadnum ,
+            tr_provinceid ,
+            tr_name ,
+            tr_level ,
+            tr_startsite ,
+            tr_startstakenum ,
+            tr_startlng ,
+            tr_startlat ,
+            tr_startstationid ,
+            tr_endsite ,
+            tr_endstakenum ,
+            tr_endlng ,
+            tr_endlat ,
+            tr_endstationid ,
+            tr_sectionownerid,
+            tr_sectionownercode 
+        ) VALUES (
+            #{pkId,jdbcType=VARCHAR} ,
+            #{trId,jdbcType=VARCHAR} ,
+            #{trRoadnum,jdbcType=VARCHAR} ,
+            #{trProvinceid,jdbcType=VARCHAR} ,
+            #{trName,jdbcType=VARCHAR} ,
+            #{trLevel,jdbcType=INTEGER} ,
+            #{trStartsite,jdbcType=VARCHAR} ,
+            #{trStartstakenum,jdbcType=VARCHAR} ,
+            #{trStartlng,jdbcType=VARCHAR} ,
+            #{trStartlat,jdbcType=VARCHAR} ,
+            #{trStartstationid,jdbcType=VARCHAR} ,
+            #{trEndsite,jdbcType=VARCHAR} ,
+            #{trEndstakenum,jdbcType=VARCHAR} ,
+            #{trEndlng,jdbcType=VARCHAR} ,
+            #{trEndlat,jdbcType=VARCHAR} ,
+            #{trEndstationid,jdbcType=VARCHAR} ,
+            #{trSectionownerid,jdbcType=VARCHAR},
+            #{trSectionownerCode,jdbcType=VARCHAR} 
+        )
+    ]]>
+        <!--
+            oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL
+            DB2: order="BEFORE"" values nextval for sequenceName
+            <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+            SELECT sequenceName.nextval AS ID FROM DUAL
+            </selectKey>
+        -->
+    </insert>
+
+    <update id="update"
+        parameterType="com.uk.sec.bns.client.model.BasicTollroad">
+        <![CDATA[
+        UPDATE basic_tollroad SET
+            tr_id = #{trId,jdbcType=VARCHAR} ,
+            tr_roadnum = #{trRoadnum,jdbcType=VARCHAR} ,
+            tr_provinceid = #{trProvinceid,jdbcType=VARCHAR} ,
+            tr_name = #{trName,jdbcType=VARCHAR} ,
+            tr_level = #{trLevel,jdbcType=INTEGER} ,
+            tr_startsite = #{trStartsite,jdbcType=VARCHAR} ,
+            tr_startstakenum = #{trStartstakenum,jdbcType=VARCHAR} ,
+            tr_startlng = #{trStartlng,jdbcType=VARCHAR} ,
+            tr_startlat = #{trStartlat,jdbcType=VARCHAR} ,
+            tr_startstationid = #{trStartstationid,jdbcType=VARCHAR} ,
+            tr_endsite = #{trEndsite,jdbcType=VARCHAR} ,
+            tr_endstakenum = #{trEndstakenum,jdbcType=VARCHAR} ,
+            tr_endlng = #{trEndlng,jdbcType=VARCHAR} ,
+            tr_endlat = #{trEndlat,jdbcType=VARCHAR} ,
+            tr_endstationid = #{trEndstationid,jdbcType=VARCHAR} ,
+            tr_sectionownerid = #{trSectionownerid,jdbcType=VARCHAR},
+            tr_sectionownercode = #{trSectionownerCode,jdbcType=VARCHAR}
+        WHERE
+            pk_id = #{pkId} 
+    ]]>
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        <![CDATA[
+        delete from basic_tollroad where
+        pk_id = #{id} 
+    ]]>
+    </delete>
+
+    <select id="getById" parameterType="java.lang.String"
+        resultMap="BasicTollroadResult">
+        select
+        <include refid="basicTollroadColumns" />
+        <![CDATA[
+            from basic_tollroad
+            where
+                pk_id = #{id} 
+        ]]>
+    </select>
+
+    <sql id="basicTollroadDynamicWhere">
+        <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+        <where>
+            <if
+                test="@Ognl@isNotBlank(pkId)">
+                and basic_tollroad.pk_id = #{pkId}            </if>
+            <if
+                test="@Ognl@isNotBlank(trId)">
+                and basic_tollroad.tr_id = #{trId}            </if>
+            <if
+                test="@Ognl@isNotBlank(trRoadnum)">
+                and basic_tollroad.tr_roadnum = #{trRoadnum}            </if>
+            <if
+                test="@Ognl@isNotBlank(trProvinceid)">
+                and basic_tollroad.tr_provinceid = #{trProvinceid}            </if>
+            <if
+                test="@Ognl@isNotBlank(trName)">
+                and basic_tollroad.tr_name = #{trName}            </if>
+            <if
+                test="@Ognl@isNotBlank(trLevel)">
+                and basic_tollroad.tr_level = #{trLevel}            </if>
+            <if
+                test="@Ognl@isNotBlank(trStartsite)">
+                and basic_tollroad.tr_startsite = #{trStartsite}            </if>
+            <if
+                test="@Ognl@isNotBlank(trStartstakenum)">
+                and basic_tollroad.tr_startstakenum = #{trStartstakenum}            </if>
+            <if
+                test="@Ognl@isNotBlank(trStartlng)">
+                and basic_tollroad.tr_startlng = #{trStartlng}            </if>
+            <if
+                test="@Ognl@isNotBlank(trStartlat)">
+                and basic_tollroad.tr_startlat = #{trStartlat}            </if>
+            <if
+                test="@Ognl@isNotBlank(trStartstationid)">
+                and basic_tollroad.tr_startstationid = #{trStartstationid}            </if>
+            <if
+                test="@Ognl@isNotBlank(trEndsite)">
+                and basic_tollroad.tr_endsite = #{trEndsite}            </if>
+            <if
+                test="@Ognl@isNotBlank(trEndstakenum)">
+                and basic_tollroad.tr_endstakenum = #{trEndstakenum}            </if>
+            <if
+                test="@Ognl@isNotBlank(trEndlng)">
+                and basic_tollroad.tr_endlng = #{trEndlng}            </if>
+            <if
+                test="@Ognl@isNotBlank(trEndlat)">
+                and basic_tollroad.tr_endlat = #{trEndlat}            </if>
+            <if
+                test="@Ognl@isNotBlank(trEndstationid)">
+                and basic_tollroad.tr_endstationid = #{trEndstationid}            </if>
+            <if
+                test="@Ognl@isNotBlank(trSectionownerid)">
+                and basic_tollroad.tr_sectionownerid = #{trSectionownerid}            </if>
+            <if
+                test="@Ognl@isNotBlank(trSectionownerCode)">
+                and basic_tollroad.tr_sectionownercode = #{trSectionownerCode}            </if>
+        </where>
+    </sql>
+
+    <select id="count" resultType="long">
+        select count(*) from basic_tollroad
+        <include refid="basicTollroadDynamicWhere" />
+    </select>
+
+    <!--
+        分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+        因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="pageSelect" resultMap="BasicTollroadResult">
+        select
+        <include refid="basicTollroadColumns" />
+        from basic_tollroad
+        <include refid="basicTollroadDynamicWhere" />
+        <if test="@Ognl@isNotEmpty(sortColumns)">
+            ORDER BY ${sortColumns}
+        </if>
+    </select>
+
+                                      
+
+    <select id="findAll"
+        parameterType="com.uk.sec.bns.client.model.BasicTollroad"
+        resultMap="BasicTollroadResult">
+        select
+        <include refid="basicTollroadColumns" />
+        from basic_tollroad
+        <include refid="basicTollroadDynamicWhere" />
+    </select>
+
+</mapper>
